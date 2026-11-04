@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Guía Pamplona Arena Games 26</title>
+<meta name="description" content="WODs por categoría de los Pamplona Arena Games 26 (Navarra Arena, 14-15 nov). Guía no oficial.">
+<meta name="theme-color" content="#0a1330">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arena Games">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: cabecera tipo cartel (azul noche y rojo, como las imágenes oficiales), barra fija con pestañas
+   y selector de categoría, y una tarjeta por WOD que se abre en tu categoría. Un solo tema oscuro. */
+:root{
+  --bg:#0a1330; --bg-2:#0e1a3e; --card:#13214a; --card-2:#1a2a5a;
+  --line:rgba(255,255,255,.12); --line-2:rgba(255,255,255,.24);
+  --ink:#f5f6fa; --ink-dim:rgba(245,246,250,.72); --ink-faint:rgba(245,246,250,.5);
+  --red:#e3261c; --red-hi:#ff5146; --gold:#ffd28a; --sky:#8fd3ff;
+  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radius:12px;
+  color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{
+  margin:0;color:var(--ink);font-family:var(--body);font-weight:500;font-size:15px;line-height:1.45;
+  background:radial-gradient(900px 460px at 85% -140px, rgba(227,38,28,.22), transparent 70%),
+             radial-gradient(700px 500px at -10% 30%, rgba(60,110,220,.18), transparent 70%), var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+button{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+a{color:var(--sky)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)}
+
+/* Cabecera */
+.hero .wrap{padding-block:30px 20px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+.hero h1{margin:6px 0 0;font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.9;font-size:clamp(44px,10vw,88px);letter-spacing:.01em}
+.hero h1 .r{color:var(--red)}
+.hero h1 small{display:block;font-size:.42em;letter-spacing:.06em;color:var(--ink)}
+.dates{display:flex;gap:8px;flex-wrap:wrap}
+.dates span{font-family:var(--cond);font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1.5px solid var(--line-2)}
+.dates .hot{background:var(--red);border-color:var(--red)}
+
+/* Barra fija */
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(10,19,48,.93);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block:1px solid var(--line)}
+.controls .wrap{padding-block:10px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:6px}
+.tab{font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;background:transparent;color:var(--ink-dim);border:1.5px solid var(--line-2);padding:8px 18px;border-radius:999px;cursor:pointer}
+.tab:hover{color:var(--ink);border-color:var(--ink-dim)}
+.tab[aria-selected="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.picker{display:flex;align-items:center;gap:10px;min-width:0}
+.picker label{font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);white-space:nowrap}
+.picker select{font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);background:var(--card-2);border:1.5px solid var(--line-2);border-radius:10px;padding:9px 12px;min-height:42px;max-width:100%;cursor:pointer}
+
+main .wrap{padding-block:22px 40px}
+.view{display:flex;flex-direction:column;gap:20px}
+
+/* Aviso instalar */
+.install{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius);background:linear-gradient(135deg,rgba(227,38,28,.24),rgba(227,38,28,.06));border:1px solid rgba(227,38,28,.5)}
+.install img{width:44px;height:44px;border-radius:10px;flex:none}
+.install-txt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;font-size:14px;color:var(--ink-dim)}
+.install-txt b{color:var(--ink);font-weight:800;font-size:15px}
+.install-btn{background:var(--red);color:#fff;border:none;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap;font-family:var(--cond);font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+.install-x{background:none;border:none;color:var(--ink-dim);font-size:24px;line-height:1;cursor:pointer;padding:4px 6px}
+
+/* Cabecera de categoría */
+.me{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:flex-end;justify-content:space-between}
+.me h2{margin:2px 0 0;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(32px,6.5vw,54px);line-height:.95;letter-spacing:.01em}
+.me p{margin:4px 0 0;color:var(--ink-dim)}
+.pill{font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--ink-dim);white-space:nowrap}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Tarjeta WOD */
+.wod{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--red);border-radius:var(--radius);padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px}
+.wod-top{display:flex;justify-content:space-between;gap:8px 14px;flex-wrap:wrap;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+.wod-top .d{color:var(--red-hi)}
+.wod-title{margin:0;display:flex;align-items:baseline;gap:4px 14px;flex-wrap:wrap;font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:1}
+.wod-title .n{font-size:40px}
+.wod-title .name{font-size:40px;color:var(--red-hi)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;cursor:pointer;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:9px 10px;border-radius:8px;background:rgba(255,255,255,.07);color:var(--ink-dim);border:1.5px solid transparent;min-height:44px}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--red);color:#fff}
+.seg button.mine{border-color:var(--line-2)}
+.seg button.mine::after{content:"tuya";margin-left:6px;font-size:11px;letter-spacing:.08em;opacity:.85}
+.fmt{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center}
+.fmt .big{font-family:var(--display);font-size:30px;line-height:1;text-transform:uppercase}
+.tcbar{display:inline-block;background:var(--red);color:#fff;font-family:var(--cond);font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;transform:skew(-10deg);font-size:16px}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.step{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--card-2);border-radius:10px;padding:9px 12px}
+.step .reps{font-family:var(--display);font-size:26px;line-height:1;text-align:right}
+.step .mov{font-weight:700;font-size:15px;min-width:0}
+.step .mov small{display:block;font-family:var(--cond);font-weight:600;font-size:14px;letter-spacing:.04em;color:var(--ink-dim)}
+.step .tag{font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.step .tag.sy{background:rgba(143,211,255,.14);color:var(--sky)}
+.step .tag.bx{background:rgba(255,210,138,.14);color:var(--gold)}
+.step.jump{background:transparent;border:1.5px dashed var(--line-2)}
+.move{list-style:none;text-align:center;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding:0}
+.step.new{box-shadow:inset 3px 0 0 var(--red)}
+
+.note{margin:0;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,210,138,.4);background:rgba(255,210,138,.07);font-size:14px;color:var(--ink-dim)}
+.note b{color:var(--gold)}
+
+/* Bloques plegables */
+details.blk{border:1px solid var(--line);border-radius:10px;background:var(--bg-2)}
+details.blk>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;font-family:var(--cond);font-weight:800;font-size:17px;letter-spacing:.08em;text-transform:uppercase;min-height:44px}
+details.blk>summary::-webkit-details-marker{display:none}
+details.blk>summary::after{content:"+";font-family:var(--body);font-size:22px;line-height:1;color:var(--ink-dim)}
+details.blk[open]>summary::after{content:"–"}
+details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-faint);margin-left:auto;margin-right:8px}
+.blk-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.blk-body ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:7px}
+.blk-body ol li::marker{font-family:var(--cond);font-weight:800;color:var(--red-hi)}
+.blk-body p{margin:0}
+.std{border-top:1px dashed var(--line-2);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.std:first-child{border-top:none;padding-top:0}
+.std h4{margin:0;font-family:var(--cond);font-weight:800;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.std ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;color:var(--ink-dim)}
+.std .sync{color:var(--sky)}
+
+/* Comparativa */
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;width:100%;font-size:14px}
+.cmp th,.cmp td{padding:8px 8px;text-align:left;border-bottom:1px solid var(--line)}
+.cmp th{font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.cmp td:first-child{font-family:var(--cond);font-weight:800;color:var(--ink-dim);white-space:nowrap}
+.cmp .on{background:rgba(227,38,28,.16);color:var(--ink);font-weight:700}
+.cmp th.on{color:var(--red-hi)}
+
+.wod-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;font-size:14px;color:var(--ink-dim)}
+.link{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;border:1.5px solid var(--line-2);border-radius:999px;padding:8px 14px;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;min-height:40px}
+.link:hover{border-color:var(--ink)}
+
+.empty{background:var(--card);border:1.5px dashed var(--line-2);border-radius:var(--radius);padding:22px 18px;display:flex;flex-direction:column;gap:6px}
+.empty b{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase}
+.empty p{margin:0;color:var(--ink-dim)}
+
+/* Info */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box h3{margin:0;font-family:var(--display);font-weight:400;font-size:24px;text-transform:uppercase;letter-spacing:.01em}
+.box ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.box li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:7px}
+.box li:last-child{border-bottom:none;padding-bottom:0}
+.box li span:last-child{color:var(--ink-dim);text-align:right}
+.box.pend{border-style:dashed;border-color:rgba(255,210,138,.45)}
+.box p{margin:0;color:var(--ink-dim);font-size:14px}
+.rules li{display:block;position:relative;padding-left:16px;color:var(--ink-dim);font-size:14px}
+.rules li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;background:var(--red);transform:rotate(45deg)}
+
+footer .wrap{padding-block:10px 44px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;color:var(--ink-faint);font-size:13px}
+footer p{margin:0;max-width:70ch}
+.dwa{display:inline-flex;align-items:center;gap:8px;background:#0d1b2e;border:1px solid rgba(59,155,232,.45);color:#fff;text-decoration:none;padding:8px 16px;border-radius:999px;font-weight:600;font-size:13px}
+.dwa:hover{border-color:#3b9be8}
+.dwa .dot{width:8px;height:8px;border-radius:50%;background:#3b9be8}
+.dwa b{color:#3b9be8;font-weight:800}
+
+@media (max-width:640px){
+  .hero .wrap{padding-block:22px 14px}
+  .tabs{width:100%}
+  .tab{flex:1 1 auto}
+  .picker{width:100%}
+  .picker select{flex:1;min-width:0}
+  .wod{padding:14px 12px}
+  .wod-title .n,.wod-title .name{font-size:34px}
+  .step{grid-template-columns:42px minmax(0,1fr);row-gap:4px}
+  .step .reps{font-size:23px}
+  .step .tag{grid-column:2;justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Navarra Arena · Pamplona · 14 – 15 nov 2026</div>
+      <h1>Pamplona <span class="r">Arena</span><small>Games 26 · Guía del atleta</small></h1>
+    </div>
+    <div class="dates" aria-label="Días de competición">
+      <span>Vie 13 · acreditación</span>
+      <span class="hot">Sáb 14</span>
+      <span class="hot">Dom 15</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button class="tab" type="button" role="tab" id="tab-wods" data-view="wods" aria-selected="true" aria-controls="view-wods">WODs</button>
+      <button class="tab" type="button" role="tab" id="tab-info" data-view="info" aria-selected="false" aria-controls="view-info">Info y horarios</button>
+    </nav>
+    <div class="picker">
+      <label for="catSelect">Tu categoría</label>
+      <select id="catSelect"></select>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="install" id="installBar" hidden>
+      <img src="./icons/icon-192.png" alt="">
+      <div class="install-txt"><b>Llévala como app</b><span id="installHint"></span></div>
+      <button type="button" class="install-btn" id="installBtn" hidden>Instalar</button>
+      <button type="button" class="install-x" id="installClose" aria-label="Cerrar aviso">×</button>
+    </div>
+    <section class="view" id="view-wods" role="tabpanel" aria-labelledby="tab-wods" style="margin-top:18px"></section>
+    <section class="view" id="view-info" role="tabpanel" aria-labelledby="tab-info" style="margin-top:18px" hidden></section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Guía no oficial. Datos de las publicaciones de @pamplonarenagames y del briefing de Circle21 (4 nov 2026). Si algo cambia, manda lo que diga la organización en Circle21 y en los briefings.</p>
+    <a class="dwa" href="https://digitalworkapps.netlify.app" target="_blank" rel="noopener"><span class="dot"></span> Herramienta diseñada por <b>DigitalWorkApps</b></a>
+  </div>
+</footer>
+
+<script>
+/* ======================= DATOS DE LA COMPETICIÓN =======================
+   Para añadir un WOD: un objeto más en WODS. Para los horarios: rellena SCHEDULE
+   cuando la organización los publique (una fila por heat) y sube la versión del caché en sw.js. */
+const EVENT = {
+  name: "Pamplona Arena Games 26",
+  venue: "Navarra Arena · Pl. Aizagerria 1, Pamplona",
+  dates: [["Viernes 13 nov","Acreditaciones, bienvenida y briefing presencial"],["Sábado 14 nov","Competición"],["Domingo 15 nov","Competición y final (top 10 por categoría)"]],
+  links: [["Circle21 (WODs, flow y heats)","https://circle21.events/pamplona-arena-games-26?tab=workouts"],["Instagram @pamplonarenagames","https://www.instagram.com/pamplonarenagames/"]]
+};
+
+const MODS = { eq:"Equipos", ind:"Individual" };
+const LEVELS = { rx:"RX", int:"Intermedio", esc:"Scaled", elite:"Elite" };
+const CATS = [
+  {k:"eq-rx",       m:"eq",  lv:"rx",    name:"RX Team",              comp:"3 chicos + 1 chica (MMMF)"},
+  {k:"eq-int-hhhm", m:"eq",  lv:"int",   name:"Intermedio Team HHHM", comp:"3 chicos + 1 chica (MMMF)"},
+  {k:"eq-int-hhmm", m:"eq",  lv:"int",   name:"Intermedio Team HHMM", comp:"2 chicos + 2 chicas (MMFF)"},
+  {k:"eq-esc",      m:"eq",  lv:"esc",   name:"Scaled Team",          comp:"2 chicos + 2 chicas (MMFF)"},
+  {k:"ind-elite-m", m:"ind", lv:"elite", name:"Elite Masculino",      comp:"Individual"},
+  {k:"ind-elite-f", m:"ind", lv:"elite", name:"Elite Femenino",       comp:"Individual"}
+];
+const CAT = Object.fromEntries(CATS.map(c=>[c.k,c]));
+const DEFAULT_CAT = "eq-rx";
+
+/* Pasos: {r: reps, mv: movimiento, sy: synchro (2), bx: atleta del cajón, h: altura}; "move" = avanzar cajón.
+   new:true marca lo que cambia respecto a otras categorías. */
+const BOX = h => ({r:20, mv:"Box Jump Over", ...h});
+const WODS = [
+  {
+    n:1, name:"The Acrobat", mods:["eq"], when:"Sábado mañana", where:"Navarra Arena · interior",
+    format:"For time", tc:"11:00", score:"Tiempo cuando el último del equipo cruza la línea de meta. Si no acabáis en 11', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1gxeXCYB24TfgxnDKwJLqJns7RJaBqY6G/view",
+    boxes:"Cajón: A1 50 cm · A2 60 cm · A3 67,5 cm · A4 75 cm (todas las categorías)",
+    vars:{
+      rx:[{r:35,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+          {r:20,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+          {r:15,mv:"Ring Muscle Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+          {r:20,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
+          {r:35,mv:"Chest to Bar",sy:1,new:1}],
+      int:[{r:35,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+           {r:25,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+           {r:15,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+           {r:25,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
+           {r:35,mv:"Pull Up",sy:1,new:1}],
+      esc:[{r:35,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+           {r:25,mv:"Hand Release Push Up",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+           {r:15,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+           {r:25,mv:"Hand Release Push Up",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
+           {r:35,mv:"Pull Up",sy:1,new:1}]
+    },
+    // Lo que cambia entre categorías: los gimnásticos de cada bloque
+    compare:{rows:["Bloque 1","Bloque 2","Bloque 3","Bloque 4","Final"],
+      rx:["35 C2B","20 BMU","15 RMU","20 BMU","35 C2B"],
+      int:["35 Pull Up","25 C2B","15 BMU","25 C2B","35 Pull Up"],
+      esc:["35 Pull Up","25 HRPU","15 Pull Up","25 HRPU","35 Pull Up"]},
+    notes:[
+      "<b>Ojo:</b> el flow del briefing dice 30 BMU en el bloque 2 de RX, pero la tabla del WOD y la imagen de Instagram dicen 20. Aquí pone 20; confirmadlo en el briefing.",
+      "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
+    ],
+    flow:[
+      "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+      "A la señal, los 4 vais al rack. Los gimnásticos son synchro a 2: trabajan 2 y descansan 2, y las reps se reparten libremente (sin límite por atleta).",
+      "Quien descansa espera siempre detrás del rack, donde se hacen los cambios. En los RMU se espera en la casilla de START.",
+      "Al acabar los gimnásticos, A1 va al cajón y hace sus 20 Box Jump Over mientras el resto espera debajo del rack.",
+      "Al terminar, A1 avanza el cajón a la siguiente sección de pista y lo gira a la altura 2.",
+      "A1 vuelve al rack con TAP OBLIGATORIO y empieza el siguiente bloque de gimnásticos.",
+      "Se repite hasta 4 bloques: cada ronda de cajón la hace un atleta distinto (A2, A3, A4) y el cajón sube una altura cada vez.",
+      "Para acabar, la misma tanda de gimnásticos que al principio.",
+      "Corréis todos a la FINISH LINE: el tiempo para cuando cruza el último.",
+      "Antes de salir, devolved el cajón a su posición y altura inicial con sus acoples. Si no, el WOD cuenta 0."
+    ],
+    standards:[
+      {mv:"Box Jump Over", lv:["rx","int","esc"], pts:["Empieza con los dos pies en el suelo a un lado del cajón; acaba con los dos pies en el suelo al otro lado.","Despegue a la vez con los dos pies y los dos pies tocan la parte de arriba del cajón.","No hace falta extensión completa arriba. Cualquier orientación.","Solo los pies tocan el cajón (nada por debajo de la cintura). Bajada libre: salto o step."]},
+      {mv:"Chest to Bar (C2B)", lv:["rx","int"], pts:["Desde colgado con brazos extendidos y pies sin tocar el suelo.","Cuenta cuando el pecho toca claramente la barra a la altura de la clavícula o por debajo.","Cualquier agarre. Estricto, kipping o butterfly."], sync:"Los dos pechos tocando la barra a la vez."},
+      {mv:"Bar Muscle Up (BMU)", lv:["rx","int"], pts:["Desde bar hang con codos extendidos; acaba en soporte arriba con codos extendidos y hombros sobre o delante de la barra.","Solo las manos tocan la barra. Obligatorio pasar por dip.","Los pies no pueden subir por encima del plano de la barra en el kipping. No se puede apoyar el torso ni tocar la estructura vertical."], sync:"Posición final. Si esperáis arriba, sin doblar codos ni apoyar la cintura en la barra."},
+      {mv:"Ring Muscle Up (RMU)", lv:["rx"], pts:["Desde suspensión con codos extendidos; acaba en apoyo con codos extendidos y hombros sobre o delante de las manos.","Obligatorio pasar por alguna porción del dip antes de bloquear.","Los pies no pueden pasar la parte baja de las anillas en el kipping. No se sueltan las anillas."], sync:"Posición final, manteniendo la extensión de codos para marcar el synchro."},
+      {mv:"Pull Up", lv:["int","esc"], pts:["Desde colgado con brazos extendidos y pies sin tocar el suelo.","Cuenta cuando la barbilla supera claramente el plano de la barra.","Cualquier agarre. Solo las manos tocan la estructura. Estricto, kipping o butterfly."], sync:"Las dos barbillas por encima de la barra a la vez."},
+      {mv:"Hand Release Push Up (HRPU)", lv:["esc"], pts:["Desde plancha (brazos verticales bajo los hombros, cadera y rodillas extendidas).","Pecho al suelo (entre clavícula y abdomen alto) y levantar las manos del suelo.","Los pies no se despegan del suelo en toda la rep."], sync:"Los dos en plancha al final de la rep, uno al lado del otro dentro del rack, mirando a la finish line."}
+    ]
+  }
+];
+
+/* Horarios: vacío hasta que se publiquen. Formato de cada fila (heat):
+   {d:"sab", e:1, c:"eq-rx", h:1, s:"9:00", fi:"9:11", b:"8:20", w:"8:40", l:"8:55", a:"8:58"} */
+const SCHEDULE = [];
+
+/* ======================= Utilidades ======================= */
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,String(v)); }catch(e){} }
+};
+function initialCat(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if(CAT[h]) return h;
+  const s = store.get("pag-cat");
+  return (s && CAT[s]) ? s : DEFAULT_CAT;
+}
+const state = { cat: initialCat(), sel: {} };
+
+/* ======================= WODs ======================= */
+const vWods = document.getElementById("view-wods");
+
+function stepHTML(s){
+  if(s === "move") return `<li class="move">— avanzar cajón —</li>`;
+  const isBox = !!s.bx;
+  const tag = s.sy ? `<span class="tag sy">synchro 2</span>` : isBox ? `<span class="tag bx">${s.h}</span>` : "";
+  const sub = isBox ? `<small>atleta ${s.bx}</small>` : "";
+  return `<li class="step${isBox ? " jump" : ""}${s.new ? " new" : ""}"><span class="reps">${s.r}</span><span class="mov">${s.mv}${sub}</span>${tag}</li>`;
+}
+
+function wodCard(w){
+  const cat = CAT[state.cat];
+  const lvs = Object.keys(w.vars);
+  const lv = state.sel[w.n] || (lvs.includes(cat.lv) ? cat.lv : lvs[0]);
+  const seg = lvs.length > 1 ? `<div class="seg" role="group" aria-label="Ver el WOD de otra categoría">${lvs.map(k=>
+    `<button type="button" data-n="${w.n}" data-lv="${k}" aria-pressed="${k===lv}"${k===cat.lv ? ' class="mine"' : ""}>${LEVELS[k]}</button>`).join("")}</div>` : "";
+  const cmp = w.compare ? `<details class="blk"><summary>Lo que cambia entre categorías</summary>
+      <div class="blk-body cmp"><table>
+        <thead><tr><th></th>${lvs.map(k=>`<th class="${k===lv?"on":""}">${LEVELS[k]}</th>`).join("")}</tr></thead>
+        <tbody>${w.compare.rows.map((r,i)=>`<tr><td>${r}</td>${lvs.map(k=>`<td class="${k===lv?"on":""}">${w.compare[k][i]}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table><p style="color:var(--ink-faint);font-size:13px">Los Box Jump Over (20 por bloque, alturas A1–A4) son iguales para todos.</p></div></details>` : "";
+  const stds = w.standards.filter(s=>s.lv.includes(lv));
+  return `<article class="wod" id="wod-${w.n}">
+    <div class="wod-top"><span class="d">${w.when}</span><span>${w.where}</span></div>
+    <h3 class="wod-title"><span class="n">WOD ${w.n}</span><span class="name">${w.name}</span></h3>
+    ${seg}
+    <div class="fmt"><span class="big">${w.format}</span><span class="tcbar">Time cap ${w.tc}</span></div>
+    <ol class="steps" aria-label="WOD ${w.n} · ${LEVELS[lv]}">${w.vars[lv].map(stepHTML).join("")}</ol>
+    <p class="note" style="border-color:var(--line-2);background:transparent">${w.boxes}</p>
+    ${w.notes.map(t=>`<p class="note">${t}</p>`).join("")}
+    ${cmp}
+    <details class="blk"><summary>Cómo se hace (flow)<small>${w.flow.length} pasos</small></summary>
+      <div class="blk-body"><ol>${w.flow.map(t=>`<li>${t}</li>`).join("")}</ol>
+      <p><b>Score:</b> ${w.score}</p></div></details>
+    <details class="blk"><summary>Standards de ${LEVELS[lv]}<small>${stds.length} movimientos</small></summary>
+      <div class="blk-body">${stds.map(s=>`<div class="std"><h4>${s.mv}</h4><ul>${s.pts.map(p=>`<li>${p}</li>`).join("")}${s.sync ? `<li class="sync">Synchro: ${s.sync}</li>` : ""}</ul></div>`).join("")}</div></details>
+    <div class="wod-foot"><span>Hora de tu heat: pendiente de publicar</span>
+      <a class="link" href="${w.pdf}" target="_blank" rel="noopener">Briefing oficial (PDF)</a></div>
+  </article>`;
+}
+
+function renderWods(){
+  const cat = CAT[state.cat];
+  const list = WODS.filter(w=>w.mods.includes(cat.m));
+  vWods.innerHTML = `
+    <div class="me">
+      <div><span class="eyebrow">${MODS[cat.m]}</span><h2>${cat.name}</h2><p>${cat.comp}</p></div>
+      <div class="pills"><span class="pill">${list.length} ${list.length===1?"WOD publicado":"WODs publicados"}</span><span class="pill">Horarios pendientes</span></div>
+    </div>
+    ${list.length ? list.map(wodCard).join("") : `<div class="empty"><b>Aún no hay WODs</b><p>La organización todavía no ha publicado los WODs de ${cat.name}. En cuanto salgan en Circle21 o en su Instagram, aparecerán aquí.</p></div>`}`;
+}
+vWods.addEventListener("click", e=>{
+  const b = e.target.closest("button[data-lv]");
+  if(!b) return;
+  const n = Number(b.dataset.n);
+  state.sel[n] = b.dataset.lv;
+  // conserva qué bloques estaban abiertos
+  const card = document.getElementById("wod-"+n);
+  const open = [...card.querySelectorAll("details")].map(d=>d.open);
+  card.outerHTML = wodCard(WODS.find(w=>w.n===n));
+  const nc = document.getElementById("wod-"+n);
+  nc.querySelectorAll("details").forEach((d,i)=>{ d.open = !!open[i]; });
+  nc.querySelector(`button[data-lv="${b.dataset.lv}"]`)?.focus();
+});
+
+/* ======================= Info y horarios ======================= */
+const vInfo = document.getElementById("view-info");
+function renderInfo(){
+  const cat = CAT[state.cat];
+  const mine = SCHEDULE.filter(r=>r.c===state.cat);
+  vInfo.innerHTML = `
+    <div class="grid">
+      <section class="box pend"><h3>Horarios</h3>
+        ${mine.length ? `<p>${mine.length} heats publicados para ${cat.name}.</p>` :
+        `<p>La organización aún no ha publicado los heats. En cuanto salgan, aquí tendrás la chuleta de ${cat.name}: briefing, calentamiento, line up, entrada a pista y hora de cada WOD.</p>
+         <p>Mientras, en Circle21 (app) puedes seguir los heats de tu equipo.</p>`}
+      </section>
+      <section class="box"><h3>Fechas</h3><ul>${EVENT.dates.map(([d,t])=>`<li><span>${d}</span><span>${t}</span></li>`).join("")}</ul>
+        <p>${EVENT.venue}</p></section>
+      <section class="box"><h3>Categorías</h3><ul>${CATS.map(c=>`<li><span>${MODS[c.m]} · ${c.name}</span><span>${c.m==="eq" ? c.comp.replace(/ \(.+\)/,"") : "Individual"}</span></li>`).join("")}</ul></section>
+      <section class="box"><h3>Formato</h3><ul class="rules">
+        <li>Equipos de 4. RX e Intermedio HHHM: 3 chicos y 1 chica. Intermedio HHMM y Scaled: 2 y 2.</li>
+        <li>Heats de 20 equipos. El orden de los heats sale del orden de inscripción.</li>
+        <li>Puntuación acumulada en todos los WODs.</li>
+        <li>A la final pasan los 10 mejores equipos de cada categoría.</li>
+        <li>Las dudas de los WODs se resuelven en los briefings previos al calentamiento.</li>
+      </ul></section>
+      <section class="box"><h3>Enlaces oficiales</h3><ul>${EVENT.links.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join("")}</ul></section>
+    </div>`;
+}
+
+/* ======================= Navegación y categoría ======================= */
+function showView(name){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.view===name)));
+  ["wods","info"].forEach(v=>{ document.getElementById("view-"+v).hidden = v!==name; });
+}
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click", ()=>{ showView(t.dataset.view); window.scrollTo({top:0,behavior:"smooth"}); }));
+
+const select = document.getElementById("catSelect");
+select.innerHTML = Object.entries(MODS).map(([m,label])=>
+  `<optgroup label="${label}">${CATS.filter(c=>c.m===m).map(c=>`<option value="${c.k}">${c.name}</option>`).join("")}</optgroup>`).join("");
+function setCat(k, fromHash){
+  if(!CAT[k]) return;
+  state.cat = k; state.sel = {};
+  store.set("pag-cat", k);
+  select.value = k;
+  if(!fromHash && decodeURIComponent(location.hash.slice(1)) !== k){ try{ location.replace("#"+k); }catch(e){} }
+  renderWods(); renderInfo();
+}
+select.addEventListener("change", ()=>setCat(select.value, false));
+window.addEventListener("hashchange", ()=>{ const h = decodeURIComponent(location.hash.slice(1)); if(CAT[h] && h!==state.cat) setCat(h, true); });
+
+select.value = state.cat;
+renderWods(); renderInfo();
+</script>
+<script>
+/* ======================= PWA ======================= */
+(function(){
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(err=>console.warn("SW no registrado:", err)); });
+  }
+  const bar = document.getElementById("installBar"), btn = document.getElementById("installBtn"), hint = document.getElementById("installHint");
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if(standalone || store.get("pag-install-off")==="1") return;
+  let deferred = null;
+  window.addEventListener("beforeinstallprompt", e=>{
+    e.preventDefault(); deferred = e;
+    hint.textContent = "Instálala y tendrás los WODs también sin conexión."; btn.hidden = false; bar.hidden = false;
+  });
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  if(ios){ hint.textContent = "En iPhone: pulsa Compartir y luego «Añadir a pantalla de inicio»."; bar.hidden = false; }
+  btn.addEventListener("click", async ()=>{ if(!deferred) return; deferred.prompt(); try{ await deferred.userChoice; }catch(e){} deferred = null; bar.hidden = true; });
+  document.getElementById("installClose").addEventListener("click", ()=>{ bar.hidden = true; store.set("pag-install-off","1"); });
+  window.addEventListener("appinstalled", ()=>{ bar.hidden = true; });
+})();
+</script>
+</body>
+</html>
