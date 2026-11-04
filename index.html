@@ -482,6 +482,23 @@ renderWods(); renderInfo();
 /* ======================= PWA ======================= */
 (function(){
   if("serviceWorker" in navigator){
+    /* Versiones nuevas: al abrirla, la página ya se pide primero a la red. Esto cubre la app que se queda
+       abierta en segundo plano (muy típico en iPhone): al volver a ella, o cada 15 min si sigue en pantalla,
+       mira si hay un sw.js nuevo (cada versión sube pag-vN) y, si lo hay, se recarga sola con lo último. */
+    const t0 = Date.now();
+    let hadController = !!navigator.serviceWorker.controller, reloading = false, lastCheck = 0;
+    navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+      if(!hadController){ hadController = true; return; }   // primera instalación: no hace falta recargar
+      if(reloading || Date.now() - t0 < 10000) return;       // recién abierta: la página ya llegó de la red
+      reloading = true; location.reload();
+    });
+    const checkUpdate = ()=>{
+      if(document.visibilityState !== "visible" || Date.now() - lastCheck < 60000) return;
+      lastCheck = Date.now();
+      navigator.serviceWorker.getRegistration().then(r=>r && r.update()).catch(()=>{});
+    };
+    document.addEventListener("visibilitychange", checkUpdate);
+    setInterval(checkUpdate, 15*60*1000);
     window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(err=>console.warn("SW no registrado:", err)); });
   }
   const bar = document.getElementById("installBar"), btn = document.getElementById("installBtn"), hint = document.getElementById("installHint");
