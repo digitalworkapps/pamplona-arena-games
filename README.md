@@ -4,9 +4,9 @@ Web app (PWA) con los WODs por categoría de los **Pamplona Arena Games 26** (Na
 
 👉 **https://pamplona-arena-games.vercel.app/**
 
-- 🏋️ **WODs**: cada WOD se abre en tu categoría, con pestañas para ver el de RX, Intermedio o Scaled. Incluye «Lo que cambia entre categorías», el flow paso a paso, los standards de tu nivel y el enlace al briefing oficial.
+- 🏋️ **WODs**: cada WOD se abre en tu categoría, con pestañas para ver el de Scaled, Intermedio o RX. Incluye «Lo que cambia entre categorías», el flow paso a paso, los standards de tu nivel y el enlace al briefing oficial.
 - ℹ️ **Info y horarios**: fechas, sede, categorías, formato y enlaces oficiales. Los horarios se añadirán cuando la organización publique los heats.
-- 🔗 **Enlace por categoría**: `#eq-rx`, `#eq-int-hhhm`, `#eq-int-hhmm`, `#eq-esc`, `#ind-elite-m`, `#ind-elite-f`.
+- 🔗 **Enlace por categoría**: `#eq-esc`, `#eq-int-hhmm`, `#eq-int-hhhm` (por defecto), `#eq-rx`, `#ind-elite-m`, `#ind-elite-f`.
 - 📱 **PWA**: se instala en el móvil y funciona sin conexión.
 
 ## Datos

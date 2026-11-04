@@ -247,17 +247,18 @@ const EVENT = {
 };
 
 const MODS = { eq:"Equipos", ind:"Individual" };
-const LEVELS = { rx:"RX", int:"Intermedio", esc:"Scaled", elite:"Elite" };
+const LEVELS = { esc:"Scaled", int:"Intermedio", rx:"RX", elite:"Elite" };
+const LV_ORDER = Object.keys(LEVELS);   // de menos a más: Scaled → Intermedio → RX
 const CATS = [
-  {k:"eq-rx",       m:"eq",  lv:"rx",    name:"RX Team",              comp:"3 chicos + 1 chica (MMMF)"},
-  {k:"eq-int-hhhm", m:"eq",  lv:"int",   name:"Intermedio Team HHHM", comp:"3 chicos + 1 chica (MMMF)"},
-  {k:"eq-int-hhmm", m:"eq",  lv:"int",   name:"Intermedio Team HHMM", comp:"2 chicos + 2 chicas (MMFF)"},
   {k:"eq-esc",      m:"eq",  lv:"esc",   name:"Scaled Team",          comp:"2 chicos + 2 chicas (MMFF)"},
+  {k:"eq-int-hhmm", m:"eq",  lv:"int",   name:"Intermedio Team HHMM", comp:"2 chicos + 2 chicas (MMFF)"},
+  {k:"eq-int-hhhm", m:"eq",  lv:"int",   name:"Intermedio Team HHHM", comp:"3 chicos + 1 chica (MMMF)"},
+  {k:"eq-rx",       m:"eq",  lv:"rx",    name:"RX Team",              comp:"3 chicos + 1 chica (MMMF)"},
   {k:"ind-elite-m", m:"ind", lv:"elite", name:"Elite Masculino",      comp:"Individual"},
   {k:"ind-elite-f", m:"ind", lv:"elite", name:"Elite Femenino",       comp:"Individual"}
 ];
 const CAT = Object.fromEntries(CATS.map(c=>[c.k,c]));
-const DEFAULT_CAT = "eq-rx";
+const DEFAULT_CAT = "eq-int-hhhm";
 
 /* Pasos: {r: reps, mv: movimiento, sy: synchro (2), bx: atleta del cajón, h: altura}; "move" = avanzar cajón.
    new:true marca lo que cambia respecto a otras categorías. */
@@ -347,7 +348,7 @@ function stepHTML(s){
 
 function wodCard(w){
   const cat = CAT[state.cat];
-  const lvs = Object.keys(w.vars);
+  const lvs = Object.keys(w.vars).sort((a,b)=>LV_ORDER.indexOf(a)-LV_ORDER.indexOf(b));
   const lv = state.sel[w.n] || (lvs.includes(cat.lv) ? cat.lv : lvs[0]);
   const seg = lvs.length > 1 ? `<div class="seg" role="group" aria-label="Ver el WOD de otra categoría">${lvs.map(k=>
     `<button type="button" data-n="${w.n}" data-lv="${k}" aria-pressed="${k===lv}"${k===cat.lv ? ' class="mine"' : ""}>${LEVELS[k]}</button>`).join("")}</div>` : "";
