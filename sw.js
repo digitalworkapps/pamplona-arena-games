@@ -1,5 +1,5 @@
 /* Guía Pamplona Arena Games 26 — service worker */
-const CACHE = "pag-v3";
+const CACHE = "pag-v4";
 const ASSETS = [
   "./",
   "./index.html",
