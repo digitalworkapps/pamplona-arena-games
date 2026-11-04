@@ -1,14 +1,15 @@
 /* Guía Pamplona Arena Games 26 — service worker */
-const CACHE = "pag-v7";
+const CACHE = "pag-v8";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-512.png",
-  "./icons/apple-touch-icon.png",
-  "./icons/favicon-32.png"
+  "./icons/icon-192.png?v=2",
+  "./icons/icon-512.png?v=2",
+  "./icons/icon-maskable-512.png?v=2",
+  "./icons/apple-touch-icon.png?v=2",
+  "./icons/favicon-32.png?v=2",
+  "./icons/logo.webp"
 ];
 
 self.addEventListener("install", (e) => {

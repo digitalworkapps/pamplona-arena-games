@@ -7,9 +7,9 @@
 <meta name="description" content="WODs por categoría de los Pamplona Arena Games 26 (Navarra Arena, 14-15 nov). Guía no oficial.">
 <meta name="theme-color" content="#0a1330">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png?v=2">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png?v=2">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -201,6 +201,9 @@ footer p{margin:0;max-width:65ch}
   .ev-logo{width:60px;height:60px}
 }
 @media (max-width:360px){
+  .lockup{gap:8px}
+  .lk b{font-size:34px}
+  .ev-logo{width:46px;height:46px}
   .step .mov{font-size:21px}
   .step .sy{font-size:16px}
 }
@@ -236,7 +239,7 @@ footer p{margin:0;max-width:65ch}
 <main>
   <div class="wrap">
     <div class="install" id="installBar" hidden>
-      <img src="./icons/icon-192.png" alt="">
+      <img src="./icons/icon-192.png?v=2" alt="">
       <div class="install-txt"><b>Llévala como app</b><span id="installHint"></span></div>
       <button type="button" class="install-btn" id="installBtn" hidden>Instalar</button>
       <button type="button" class="install-x" id="installClose" aria-label="Cerrar aviso">×</button>
@@ -259,7 +262,7 @@ footer p{margin:0;max-width:65ch}
    cuando la organización los publique (una fila por heat) y sube la versión del caché en sw.js. */
 const EVENT = {
   name: "Pamplona Arena Games 26",
-  logo: null,   // con el OK de la organización: "./icons/logo.png" (y cambiar los iconos)
+  logo: "./icons/logo.webp",   // logo oficial del evento (null para quitarlo de la cabecera)
   venue: "Navarra Arena · Pl. Aizagerria 1, Pamplona",
   dates: [["Viernes 13 nov","Acreditaciones, bienvenida y briefing presencial"],["Sábado 14 nov","Competición"],["Domingo 15 nov","Competición y final (top 10 por categoría)"]],
   links: [["Circle21 (WODs, flow y heats)","https://circle21.events/pamplona-arena-games-26?tab=workouts"],["Instagram @pamplonarenagames","https://www.instagram.com/pamplonarenagames/"]]
