@@ -352,9 +352,11 @@ const store = {
 };
 function initialCat(){
   const h = decodeURIComponent(location.hash.slice(1));
-  if(CAT[h]) return h;
   const s = store.get("pag-cat");
-  return (s && CAT[s]) ? s : DEFAULT_CAT;
+  const saved = (s && CAT[s]) ? s : null;
+  // Un enlace de categoría (#eq-rx…) se recuerda si aún no había ninguna guardada; si ya la había, se respeta.
+  if(CAT[h]){ if(!saved) store.set("pag-cat", h); return h; }
+  return saved || DEFAULT_CAT;
 }
 const state = { cat: initialCat(), sel: {} };
 
