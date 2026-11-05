@@ -12,7 +12,8 @@ Web app (PWA) con los WODs por categoría de los **Pamplona Arena Games 26** (Na
 ## Datos
 
 En `index.html`: `EVENT`, `CATS`, `WODS` (pasos, comparativa, flow, standards) y `SCHEDULE` (vacío hasta que salgan los heats, una fila por heat).
-Fuentes: publicación de @pamplonarenagames del WOD 1 y briefing PDF de Circle21 (4 nov 2026).
+Cada paso es `{r, mv, sy, who, bx, h}`: `sy` = nº de atletas en synchro, `who` = quién lo hace (`<b>A1</b>`), `bx`/`h` = atleta y altura del cajón. `boxes` y `flow` pueden ser iguales para todos o ir por nivel (`{rx, int, esc}`), y `compare.foot` es la nota bajo «Lo que cambia entre categorías».
+Fuentes: briefings oficiales en PDF (enlazados desde Circle21) y publicaciones de @pamplonarenagames. WOD 1: 4 nov 2026 · WOD 2: 5 nov 2026.
 
 Para añadir un WOD o los horarios, edita `index.html` y **sube la versión del caché en `sw.js`** (`pag-v1` → `pag-v2`). Al abrirla, la app siempre pide la página a la red; subir la versión hace además que las apps que estaban abiertas en segundo plano se recarguen solas al volver a ellas.
 

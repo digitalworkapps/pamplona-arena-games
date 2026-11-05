@@ -154,6 +154,7 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 /* Comparativa */
 .cmp table{border-collapse:collapse;width:100%;font-size:14px}
 .cmp th,.cmp td{padding:7px 6px;text-align:left;border-bottom:1px solid var(--line)}
+.cmp{overflow-x:auto}
 .cmp th{font-family:var(--cond);font-weight:400;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);line-height:1}
 .cmp td:first-child{font-family:var(--cond);font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
 .cmp .on{background:rgba(208,38,28,.22);color:#fff;font-weight:700}
@@ -201,6 +202,10 @@ footer p{margin:0;max-width:65ch}
   .ev-logo{width:60px;height:60px}
 }
 @media (max-width:360px){
+  .cmp table{font-size:12.5px}
+  .cmp th{font-size:16px}
+  .cmp td:first-child{font-size:14px}
+  .cmp th,.cmp td{padding:6px 4px}
   .lockup{gap:8px}
   .lk b{font-size:34px}
   .ev-logo{width:46px;height:46px}
@@ -283,9 +288,13 @@ const CATS = [
 const CAT = Object.fromEntries(CATS.map(c=>[c.k,c]));
 const DEFAULT_CAT = "eq-int-hhmm";
 
-/* Pasos: {r: reps, mv: movimiento, sy: synchro (2), bx: atleta del cajón, h: altura}; "move" = avanzar cajón.
-   new:true marca lo que cambia respecto a otras categorías. */
+/* Pasos: {r: reps, mv: movimiento, sy: synchro (nº de atletas), who: quién lo hace ("<b>A1</b>"),
+   bx + h: atleta y altura del cajón}; "move" = avanzar cajón. new:true marca lo que cambia entre categorías.
+   boxes y flow pueden ser un texto/lista para todas las categorías o un objeto por nivel {rx, int, esc}. */
 const BOX = h => ({r:20, mv:"Box Jump Over", ...h});
+const HSW  = () => ({r:2, mv:"× 5 m HSW Ramp", who:"<b>1</b> atleta", new:1});
+const WORM = (r, mv) => ({r, mv, sy:4});
+const DBS  = r => ({r, mv:"Alt DB Hang Snatch", sy:4});
 const WODS = [
   {
     n:1, name:"The Acrobat", mods:["eq"], when:"Sábado mañana", where:"Navarra Arena · interior",
@@ -293,27 +302,28 @@ const WODS = [
     pdf:"https://drive.google.com/file/d/1gxeXCYB24TfgxnDKwJLqJns7RJaBqY6G/view",
     boxes:"Tras cada tanda de Box Jump Over se avanza el cajón y sube una altura: 50 · 60 · 67,5 · 75 cm (igual en todas las categorías).",
     vars:{
-      rx:[{r:35,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
-          {r:20,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
-          {r:15,mv:"Ring Muscle Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
-          {r:20,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
-          {r:35,mv:"Chest to Bar",sy:1,new:1}],
-      int:[{r:35,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
-           {r:25,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
-           {r:15,mv:"Bar Muscle Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
-           {r:25,mv:"Chest to Bar",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
-           {r:35,mv:"Pull Up",sy:1,new:1}],
-      esc:[{r:35,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
-           {r:25,mv:"Hand Release Push Up",sy:1,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
-           {r:15,mv:"Pull Up",sy:1,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
-           {r:25,mv:"Hand Release Push Up",sy:1,new:1}, BOX({bx:"A4",h:"75 cm"}),
-           {r:35,mv:"Pull Up",sy:1,new:1}]
+      rx:[{r:35,mv:"Chest to Bar",sy:2,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+          {r:20,mv:"Bar Muscle Up",sy:2,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+          {r:15,mv:"Ring Muscle Up",sy:2,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+          {r:20,mv:"Bar Muscle Up",sy:2,new:1}, BOX({bx:"A4",h:"75 cm"}),
+          {r:35,mv:"Chest to Bar",sy:2,new:1}],
+      int:[{r:35,mv:"Pull Up",sy:2,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+           {r:25,mv:"Chest to Bar",sy:2,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+           {r:15,mv:"Bar Muscle Up",sy:2,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+           {r:25,mv:"Chest to Bar",sy:2,new:1}, BOX({bx:"A4",h:"75 cm"}),
+           {r:35,mv:"Pull Up",sy:2,new:1}],
+      esc:[{r:35,mv:"Pull Up",sy:2,new:1}, BOX({bx:"A1",h:"50 cm"}), "move",
+           {r:25,mv:"Hand Release Push Up",sy:2,new:1}, BOX({bx:"A2",h:"60 cm"}), "move",
+           {r:15,mv:"Pull Up",sy:2,new:1}, BOX({bx:"A3",h:"67,5 cm"}), "move",
+           {r:25,mv:"Hand Release Push Up",sy:2,new:1}, BOX({bx:"A4",h:"75 cm"}),
+           {r:35,mv:"Pull Up",sy:2,new:1}]
     },
     // Lo que cambia entre categorías: los gimnásticos de cada bloque
     compare:{rows:["Bloque 1","Bloque 2","Bloque 3","Bloque 4","Final"],
       rx:["35 C2B","20 BMU","15 RMU","20 BMU","35 C2B"],
       int:["35 Pull Up","25 C2B","15 BMU","25 C2B","35 Pull Up"],
-      esc:["35 Pull Up","25 HRPU","15 Pull Up","25 HRPU","35 Pull Up"]},
+      esc:["35 Pull Up","25 HRPU","15 Pull Up","25 HRPU","35 Pull Up"],
+      foot:"Los Box Jump Over (20 por bloque, alturas A1–A4) son iguales para todos."},
     notes:[
       {lv:["rx"], t:"<b>Ojo</b> el briefing oficial se contradice en el bloque 2 de RX. La tabla del WOD dice 20 BMU y el flow dice 30. Aquí pone 20, lo de la tabla (Instagram dice lo mismo). Confirmadlo en el briefing previo."},
       "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
@@ -337,6 +347,83 @@ const WODS = [
       {mv:"Ring Muscle Up (RMU)", lv:["rx"], pts:["Desde suspensión con codos extendidos; acaba en apoyo con codos extendidos y hombros sobre o delante de las manos.","Obligatorio pasar por alguna porción del dip antes de bloquear.","Los pies no pueden pasar la parte baja de las anillas en el kipping. No se sueltan las anillas."], sync:"Posición final, manteniendo la extensión de codos para marcar el synchro."},
       {mv:"Pull Up", lv:["int","esc"], pts:["Desde colgado con brazos extendidos y pies sin tocar el suelo.","Cuenta cuando la barbilla supera claramente el plano de la barra.","Cualquier agarre. Solo las manos tocan la estructura. Estricto, kipping o butterfly."], sync:"Las dos barbillas por encima de la barra a la vez."},
       {mv:"Hand Release Push Up (HRPU)", lv:["esc"], pts:["Desde plancha (brazos verticales bajo los hombros, cadera y rodillas extendidas).","Pecho al suelo (entre clavícula y abdomen alto) y levantar las manos del suelo.","Los pies no se despegan del suelo en toda la rep."], sync:"Los dos en plancha al final de la rep, uno al lado del otro dentro del rack, mirando a la finish line."}
+    ]
+  },
+  {
+    n:2, name:"Ascending Chaos", mods:["eq"], when:"Sábado tarde", where:"Navarra Arena · interior",
+    format:"For time", tc:"13:00", score:"Tiempo cuando el último del equipo cruza la línea de meta. Si no acabáis en 13', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1MS2TsFyFR_jvH-uek8_XIORNz44EUUQ0/view",
+    boxes:{
+      rx:"DBs del equipo: 2 × 25 kg, 1 × 20 kg y 1 × 17,5 kg. Cada HSW son 2 tramos de 5 m unbroken (ida hacia la finish line y vuelta hacia el rack) y cada tramo es 1 rep.",
+      int:"DBs del equipo: 2 × 20 kg y 2 × 15 kg. Los HSPU los hace cada ronda un atleta distinto (A1–A4).",
+      esc:"DBs del equipo: 2 × 15 kg y 2 × 10 kg. El gimnástico lo hace cada ronda un atleta distinto (A1–A4)."
+    },
+    vars:{
+      rx:[HSW(), WORM(15,"Worm Thruster"), DBS(15),
+          HSW(), WORM(20,"Worm Thruster"), DBS(20),
+          HSW(), WORM(25,"Worm Thruster"), DBS(25),
+          HSW()],
+      int:[{r:10,mv:"HSPU",who:"<b>A1</b>",new:1}, WORM(10,"Worm Thruster"), DBS(10),
+           {r:15,mv:"HSPU",who:"<b>A2</b>",new:1}, WORM(15,"Worm Thruster"), DBS(15),
+           {r:20,mv:"HSPU",who:"<b>A3</b>",new:1}, WORM(20,"Worm Thruster"), DBS(20),
+           {r:25,mv:"HSPU",who:"<b>A4</b>",new:1}, WORM(25,"Worm Thruster"), DBS(25)],
+      esc:[{r:3,mv:"Wall Climb",who:"<b>A1</b>",new:1}, WORM(10,"Worm Squat"), DBS(10),
+           {r:15,mv:"Abmat HSPU",who:"<b>A2</b>",new:1}, WORM(15,"Worm Squat"), DBS(15),
+           {r:20,mv:"Abmat HSPU",who:"<b>A3</b>",new:1}, WORM(20,"Worm Squat"), DBS(20),
+           {r:5,mv:"Wall Climb",who:"<b>A4</b>",new:1}, WORM(25,"Worm Squat"), DBS(25)]
+    },
+    compare:{rows:["Gimnástico","Gusano","Reps","DBs (kg)"],
+      rx:["HSW Ramp (4 veces)","Thruster","15\u00a0· 20\u00a0· 25","2×25\u00a0· 20\u00a0· 17,5"],
+      int:["HSPU","Thruster","10\u00a0· 15\u00a0· 20\u00a0· 25","2×20\u00a0· 2×15"],
+      esc:["Wall Climb y Abmat HSPU","Squat","10\u00a0· 15\u00a0· 20\u00a0· 25","2×15\u00a0· 2×10"],
+      foot:"El Alt DB Hang Snatch es synchro de los 4 en todas las categorías."},
+    notes:[
+      {lv:["rx"], t:"<b>Ojo</b> Instagram pone las DBs de RX como 25/17,5 kg, pero el briefing oficial dice 2 × 25, 1 × 20 y 1 × 17,5 kg. Aquí va lo del briefing."},
+      "Podéis cambiar de peso libremente, pero sin mover las DBs de su sitio: se mueven los atletas, no el material.",
+      "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
+    ],
+    flow:{
+      rx:[
+        "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+        "A la señal, 1 atleta empieza con el HSW Ramp y los otros 3 van al gusano y esperan tocándolo.",
+        "HSW: 2 tramos de 5 m unbroken atravesando la rampa, la ida hacia la finish line y la vuelta hacia el rack. Antes de volver hay que pasar claramente la línea de 5 m con las dos manos.",
+        "Cada tramo es 1 rep. Si te caes, vuelves a empezar desde la línea de 5 m más cercana, respetando el sentido de ida y vuelta.",
+        "Al acabar, se une al equipo en el gusano y hacéis juntos los 15 Worm Thruster.",
+        "Después vais todos a las DBs para los 15 Alt DB Hang Snatch en synchro de 4: en fila, uno detrás de otro y mirando a la finish line.",
+        "Nueva ronda: el HSW lo puede hacer cualquier atleta. Luego 20 Worm Thruster y 20 DB Hang Snatch.",
+        "Ronda 3: otro HSW (cualquier atleta), 25 Worm Thruster y 25 DB Hang Snatch, todos juntos.",
+        "Para acabar, el último HSW. Cuando ese atleta vuelve con el equipo al gusano, corréis todos a la FINISH LINE.",
+        "El tiempo para cuando cruza el último del equipo."
+      ],
+      int:[
+        "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+        "A la señal, A1 hace 10 HSPU y los otros 3 van al gusano y esperan tocándolo.",
+        "Al acabar, A1 se une en el gusano y hacéis juntos 10 Worm Thruster.",
+        "Después vais todos a las DBs para los 10 Alt DB Hang Snatch en synchro de 4: en fila, uno detrás de otro y mirando a la finish line.",
+        "Ronda 2: A2 hace 15 HSPU mientras el resto espera tocando el gusano. Luego 15 Worm Thruster y 15 DB Hang Snatch.",
+        "Ronda 3: A3 hace 20 HSPU, y luego 20 Worm Thruster y 20 DB Hang Snatch.",
+        "Ronda 4: A4 hace 25 HSPU, y las últimas 25 Worm Thruster y 25 DB Hang Snatch.",
+        "Con todas las reps hechas, corréis a la FINISH LINE. El tiempo para cuando cruza el último del equipo."
+      ],
+      esc:[
+        "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+        "A la señal, A1 hace 3 Wall Climb y los otros 3 van al gusano y esperan tocándolo.",
+        "Al acabar, A1 se une en el gusano y hacéis juntos 10 Worm Squat.",
+        "Después vais todos a las DBs para los 10 Alt DB Hang Snatch en synchro de 4: en fila, uno detrás de otro y mirando a la finish line.",
+        "Ronda 2: A2 hace 15 Abmat HSPU mientras el resto espera tocando el gusano. Luego 15 Worm Squat y 15 DB Hang Snatch.",
+        "Ronda 3: A3 hace 20 Abmat HSPU, y luego 20 Worm Squat y 20 DB Hang Snatch.",
+        "Ronda 4: A4 hace 5 Wall Climb, y las últimas 25 Worm Squat y 25 DB Hang Snatch.",
+        "Con todas las reps hechas, corréis a la FINISH LINE. El tiempo para cuando cruza el último del equipo."
+      ]
+    },
+    standards:[
+      {mv:"HSW Ramp", lv:["rx"], pts:["Se camina solo con las manos, hacia delante, atravesando la rampa.","Cada rep empieza con las dos manos claramente antes de la línea de inicio y acaba con las dos manos claramente pasada la línea final, sin tocarlas.","Hasta que las dos manos pasan la línea final, solo las manos tocan el suelo. Después ya puede tocar el resto del cuerpo.","Los dedos pueden salirse de la rampa, pero no te puedes agarrar a sus bordes.","Si te caes (tocas la rampa con algo que no sean las manos), vuelves a la línea de 5 m más cercana respetando el sentido."]},
+      {mv:"Alt DB Hang Snatch", lv:["rx","int","esc"], pts:["Empieza en colgado: DB por encima del suelo, colgando del brazo con el codo extendido.","Sube por encima de la cabeza en un solo movimiento, sin pasar por el hombro (nada de clean + press). Vale muscle, power, squat o split.","La primera rep de cada serie se puede hacer directamente desde el suelo.","Cuenta arriba bloqueado: rodillas, cadera y codo extendidos, DB por encima o un poco detrás de la cabeza, sin tocarla, y pies alineados.","Se cambia de brazo al final de cada rep. El brazo libre no se apoya en el cuerpo.","Solo los pies tocan el suelo y solo las manos la DB, con agarre completo del asa."], sync:"Los 4 a la vez y con el mismo brazo."},
+      {mv:"Worm Thruster", lv:["rx","int"], pts:["Empieza abajo de la sentadilla rompiendo el paralelo (cadera por debajo de la parte alta de la rodilla), con el gusano en el hombro y todo el equipo del mismo lado.","En un solo movimiento lo subís por encima de la cabeza con los dos brazos y acaba de pie, en el hombro contrario. No hace falta extender del todo los codos.","Se permiten pequeños ajustes de cabeza y cuello, siempre que el gusano pase claramente por encima.","La primera rep de cada serie se puede empezar con un squat clean desde el suelo.","No se toca el gusano ni el cuerpo por debajo de la cintura (los codos no tocan las rodillas al bajar) y el gusano no toca el suelo."], sync:"Posición final: todos pasáis el gusano de hombro a la vez."},
+      {mv:"Worm Squat", lv:["esc"], pts:["Sentadilla con el gusano sobre un hombro y todo el equipo del mismo lado.","Empieza abajo rompiendo el paralelo (cadera por debajo de la parte alta de la rodilla) y acaba de pie con cadera y rodillas extendidas.","La primera rep de cada serie se puede empezar con un squat clean desde el suelo.","No se toca el gusano ni el cuerpo por debajo de la cintura (los codos no tocan las rodillas al bajar) y el gusano no toca el suelo."], sync:"Posición final: todos extendidos a la vez."},
+      {mv:"HSPU", lv:["int"], pts:["Empieza invertido, con los talones en la pared y brazos, cadera y rodillas extendidos, con las dos manos tocando la línea (si la hay).","Bajas flexionando los codos hasta tocar el suelo (o la superficie marcada) con la cabeza y vuelves a la posición inicial.","Alguna parte de las dos manos sigue en la línea durante toda la rep.","Arriba y al acabar: solo los talones tocan la pared y los pies no van más abiertos que las manos."]},
+      {mv:"Abmat HSPU", lv:["esc"], pts:["Empieza invertido, con los talones en la pared y brazos, cadera y rodillas extendidos, con las dos manos tocando la línea (si la hay).","Bajas flexionando los codos hasta tocar con la cabeza la superficie del Abmat y vuelves a la posición inicial.","Alguna parte de las dos manos sigue en la línea durante toda la rep.","Arriba y al acabar: solo los talones tocan la pared y los pies no van más abiertos que las manos."]},
+      {mv:"Wall Climb", lv:["esc"], pts:["Empieza tumbado boca abajo, con parte de las dos manos en la línea más alejada de la pared: a 152 cm los chicos y a 139 cm las chicas.","Primero subes los pies a la pared y luego mueves las manos: no puedes dejar la línea hasta que los pies se despegan del suelo.","Subes hasta que las dos manos tocan a la vez la línea más cercana a la pared (a 25 cm).","Para bajar, primero las dos manos vuelven a la línea lejana y luego bajas los pies. La rep cuenta al volver a la posición inicial."]}
     ]
   }
 ];
@@ -365,8 +452,9 @@ const vWods = document.getElementById("view-wods");
 
 function stepHTML(s){
   if(s === "move") return "";
-  if(s.bx) return `<li class="step jump"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span><span class="ht"><small>${s.bx}</small>${s.h}</span></li>`;
-  return `<li class="step"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span>${s.sy ? `<span class="sy">synchro <b>2</b></span>` : ""}</li>`;
+  if(s.bx) return `<li class="step jump"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span><span class="ht"><small>${s.bx}</small>${s.h||""}</span></li>`;
+  const tag = s.sy ? `<span class="sy">synchro <b>${s.sy}</b></span>` : s.who ? `<span class="sy">${s.who}</span>` : "";
+  return `<li class="step"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span>${tag}</li>`;
 }
 
 function wodCard(w){
@@ -379,20 +467,22 @@ function wodCard(w){
       <div class="blk-body cmp"><table>
         <thead><tr><th></th>${lvs.map(k=>`<th class="lv-${k}${k===lv?" on":""}">${LEVELS[k]}</th>`).join("")}</tr></thead>
         <tbody>${w.compare.rows.map((r,i)=>`<tr><td>${r}</td>${lvs.map(k=>`<td class="lv-${k}${k===lv?" on":""}">${w.compare[k][i]}</td>`).join("")}</tr>`).join("")}</tbody>
-      </table><p style="color:var(--ink-faint);font-size:13px">Los Box Jump Over (20 por bloque, alturas A1–A4) son iguales para todos.</p></div></details>` : "";
+      </table>${w.compare.foot ? `<p style="color:var(--ink-faint);font-size:13px">${w.compare.foot}</p>` : ""}</div></details>` : "";
   const stds = w.standards.filter(s=>s.lv.includes(lv));
+  const flow = Array.isArray(w.flow) ? w.flow : (w.flow[lv] || []);
+  const extra = w.boxes ? (typeof w.boxes === "string" ? w.boxes : w.boxes[lv]) : "";
   return `<article class="wod lv-${lv}" id="wod-${w.n}">
     <div class="wod-top"><span class="d">${w.when}</span><span>${w.where}</span></div>
     <h3 class="wod-title"><span class="n">WOD ${w.n}</span><span class="name">‘${w.name}’</span></h3>
     ${seg}
     <div class="fmt"><span class="big">${w.format} <em>${SHORT[lv]}</em></span><span class="cap">Cap <b>:</b> ${w.tc.replace(/:00$/,"")}’</span></div>
     <ol class="steps" aria-label="WOD ${w.n} · ${LEVELS[lv]}">${w.vars[lv].map(stepHTML).join("")}</ol>
-    <p class="note plain">${w.boxes}</p>
+    ${extra ? `<p class="note plain">${extra}</p>` : ""}
     ${w.notes.filter(n=>typeof n==="string" || n.lv.includes(lv)).map(n=>`<p class="note${typeof n==="string" ? " info" : ""}">${typeof n==="string" ? n : n.t}</p>`).join("")}
     <div class="blks">
     ${cmp}
-    <details class="blk"><summary>Cómo se hace (flow)<small>${w.flow.length} pasos</small></summary>
-      <div class="blk-body"><ol>${w.flow.map(t=>`<li>${t}</li>`).join("")}</ol>
+    <details class="blk"><summary>Cómo se hace (flow)<small>${flow.length} pasos</small></summary>
+      <div class="blk-body"><ol>${flow.map(t=>`<li>${t}</li>`).join("")}</ol>
       <p><b>Score:</b> ${w.score}</p></div></details>
     <details class="blk"><summary>Standards de ${LEVELS[lv]}<small>${stds.length} movimientos</small></summary>
       <div class="blk-body">${stds.map(s=>`<div class="std"><h4>${s.mv}</h4><ul>${s.pts.map(p=>`<li>${p}</li>`).join("")}${s.sync ? `<li class="sync">Synchro: ${s.sync}</li>` : ""}</ul></div>`).join("")}</div></details>
