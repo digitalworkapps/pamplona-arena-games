@@ -1,6 +1,6 @@
 # Guía Pamplona Arena Games 26
 
-Web app (PWA) con los WODs por categoría de los **Pamplona Arena Games 26** (Navarra Arena, Pamplona · 14 – 15 nov 2026), pensada para el móvil. Guía no oficial.
+Web app (PWA) con los WODs por categoría de los **Pamplona Arena Games 26** (Navarra Arena, Pamplona · 14 – 15 nov 2026), pensada para el móvil. Guía hecha a partir de los briefings oficiales.
 
 👉 **https://pamplona-arena-games.vercel.app/**
 
