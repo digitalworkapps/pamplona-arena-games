@@ -125,6 +125,9 @@ main .wrap{padding-block:18px 36px}
 .step .sy{font-size:18px;letter-spacing:.04em;color:var(--ink-dim);white-space:nowrap}
 .step .sy b{font-weight:400;color:var(--red-txt);font-size:22px}
 .step.jump .reps,.step.jump .mov{color:var(--ink-dim)}
+.step.hd{display:block;padding:10px 0 2px;font-size:17px;letter-spacing:.08em;color:var(--red-txt)}
+.step.hd:first-child{padding-top:4px}
+.step.hd small{font-family:var(--body);font-weight:600;font-size:11px;letter-spacing:.12em;color:var(--ink-faint);margin-left:8px}
 .step .ht{font-size:19px;letter-spacing:.03em;white-space:nowrap;color:#fff}
 .step .ht small{font-family:var(--body);font-weight:700;font-size:10px;letter-spacing:.12em;color:var(--ink-faint);margin-right:6px;vertical-align:2px}
 
@@ -295,6 +298,22 @@ const BOX = h => ({r:20, mv:"Box Jump Over", ...h});
 const HSW  = () => ({r:2, mv:"× 5 m HSW Ramp", who:"<b>1</b> atleta", new:1});
 const WORM = (r, mv) => ({r, mv, sy:4});
 const DBS  = r => ({r, mv:"Alt DB Hang Snatch", sy:4});
+/* Pasos de cabecera: {hd: "3A · AMRAP 4'", sub: "0:00 – 4:00"} separan las partes de un WOD. */
+const RM3B = [{hd:"3B · Max weight", sub:"4:00 – 10:00"},
+  {r:4, mv:"RM Hang Clean & Jerk", who:"<b>A1</b>"}, {r:3, mv:"RM Hang Clean & Jerk", who:"<b>A2</b>"},
+  {r:2, mv:"RM Hang Clean & Jerk", who:"<b>A3</b>"}, {r:1, mv:"RM Hang Clean & Jerk", who:"<b>A4</b>"}];
+const FLOW3 = mv => [
+  "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START de vuestra calle (START A).",
+  `3A · A la señal vais al gusano y hacéis 7 ${mv} en synchro.`,
+  "Después, 7 Burpee Over Worm en synchro. Eso es una ronda del AMRAP: repetís hasta el minuto 4.",
+  "En el minuto 4 vais a la zona de levantamiento de vuestra calle (START B) y, sin descanso, empieza el 3B.",
+  "3B · Tenéis 6 minutos para sacar el RM de Hang Clean & Jerk de cada atleta: A1 4RM, A2 3RM, A3 2RM y A4 1RM. El tiempo lo repartís como queráis.",
+  "Hay una barra de 20 kg para los chicos y una de 15 kg para las chicas. Empiezan vacías, no se cargan hasta el minuto 4 y solo puede haber una cargada a la vez (la otra, descargada detrás).",
+  "Cada atleta hace los intentos que quiera y el equipo puede ayudar a cargar y descargar. Los que no levantan esperan detrás de la zona, que tiene que estar despejada al levantar.",
+  "Antes de cada intento dices al juez el peso y el complex. No sueltes la barra hasta que el juez valide el levantamiento.",
+  "En los complex de 2, 3 y 4 RM, si fallas una rep empiezas el complex desde cero. Todo tiene que estar validado antes del minuto 10.",
+  "Es nulo si tú o la barra os salís de las 4 líneas de la zona, si no lleváis cierres o si la barra tiene distinto peso a cada lado. Coger discos de la calle de al lado se penaliza con WOD nulo.",
+  "Al salir, dejad el material como estaba (discos ordenados y barras vacías en su sitio) o el 3A contará 0."];
 const WODS = [
   {
     n:1, name:"The Acrobat", mods:["eq"], when:"Sábado mañana", where:"Navarra Arena · interior",
@@ -425,6 +444,33 @@ const WODS = [
       {mv:"Abmat HSPU", lv:["esc"], pts:["Empieza invertido, con los talones en la pared y brazos, cadera y rodillas extendidos, con las dos manos tocando la línea (si la hay).","Bajas flexionando los codos hasta tocar con la cabeza la superficie del Abmat y vuelves a la posición inicial.","Alguna parte de las dos manos sigue en la línea durante toda la rep.","Arriba y al acabar: solo los talones tocan la pared y los pies no van más abiertos que las manos."]},
       {mv:"Wall Climb", lv:["esc"], pts:["Empieza tumbado boca abajo, con parte de las dos manos en la línea más alejada de la pared: a 152 cm los chicos y a 139 cm las chicas.","Primero subes los pies a la pared y luego mueves las manos: no puedes dejar la línea hasta que los pies se despegan del suelo.","Subes hasta que las dos manos tocan a la vez la línea más cercana a la pared (a 25 cm).","Para bajar, primero las dos manos vuelven a la línea lejana y luego bajas los pies. La rep cuenta al volver a la posición inicial."]}
     ]
+  },
+  {
+    n:3, name:"Shifting Gears", mods:["eq"], when:"Sábado tarde", where:"Navarra Arena · interior",
+    format:"AMRAP + RM", tc:"10:00", score:"3A: reps acumuladas en 4'. 3B: suma del RM de los 4 atletas (A1 + A2 + A3 + A4).",
+    pdf:"https://drive.google.com/file/d/1fZI7-TPnENGrJv8v-6vPUGKjzEZs1AN9/view",
+    boxes:"Cap total de 10': el 3A va del 0:00 al 4:00 y el 3B, sin descanso, del 4:00 al 10:00. Barra de 20 kg para chicos y de 15 kg para chicas.",
+    vars:{
+      rx:[{hd:"3A · AMRAP 4'", sub:"0:00 – 4:00"}, {r:7, mv:"Worm Hang Clean & Jerk", sy:4}, {r:7, mv:"Burpee Over Worm", sy:4}, ...RM3B],
+      int:[{hd:"3A · AMRAP 4'", sub:"0:00 – 4:00"}, {r:7, mv:"Worm Hang Clean & Jerk", sy:4}, {r:7, mv:"Burpee Over Worm", sy:4}, ...RM3B],
+      esc:[{hd:"3A · AMRAP 4'", sub:"0:00 – 4:00"}, {r:7, mv:"Worm Deadlift", sy:4, new:1}, {r:7, mv:"Burpee Over Worm", sy:4}, ...RM3B]
+    },
+    compare:{rows:["Gusano (3A)","Burpee (3A)","RM (3B)"],
+      rx:["Hang Clean & Jerk","Over Worm","Hang Clean & Jerk"],
+      int:["Hang Clean & Jerk","Over Worm","Hang Clean & Jerk"],
+      esc:["Deadlift","Over Worm","Hang Clean & Jerk"],
+      foot:"RX e Intermedio hacen exactamente lo mismo. El 3B es igual para todos: A1 4RM, A2 3RM, A3 2RM y A4 1RM."},
+    notes:[
+      {lv:["rx","int","esc"], t:"<b>Ojo</b> Si al salir no dejáis el material como estaba (discos ordenados y barras vacías en su sitio), el 3A cuenta 0."},
+      "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
+    ],
+    flow:{ rx:FLOW3("Worm Hang Clean & Jerk"), int:FLOW3("Worm Hang Clean & Jerk"), esc:FLOW3("Worm Deadlift") },
+    standards:[
+      {mv:"Worm Hang Clean & Jerk", lv:["rx","int"], pts:["Empieza con el gusano colgado de los brazos, por encima de la línea de la rodilla, y todo el equipo de pie del mismo lado.","Lo subís al hombro y, pasando por encima de la cabeza con los brazos, al hombro contrario. Tiene que tocar el primer hombro antes de pasar al otro.","No hace falta extender del todo los codos. Se permiten pequeños ajustes de cabeza y cuello, siempre que el gusano pase claramente por encima.","La primera rep de cada serie puede ser un clean directo desde el suelo.","Cuenta con el gusano en el hombro contrario de todos y cadera y rodillas extendidas."], sync:"Posición final: gusano en el hombro contrario de todos y todos extendidos a la vez."},
+      {mv:"Worm Deadlift", lv:["esc"], pts:["Empieza con el gusano en el suelo y todo el equipo de pie del mismo lado.","Cuenta con el gusano colgado de los brazos y todos extendidos: rodillas, cadera y cabeza.","No se puede agarrar el gusano por las correas.","Se permite touch and go, siempre que el gusano toque claramente el suelo."], sync:"Posición final: todos extendidos a la vez."},
+      {mv:"Burpee Over Worm", lv:["rx","int","esc"], pts:["Empieza tumbado boca abajo a un lado del gusano, con el pecho y los dos muslos en el suelo. Dos atletas a cada lado, sin salir de las líneas de vuestro carril.","Para levantarte puedes saltar o dar pasos, pero antes de saltar el gusano tienes que tener los dos pies en el suelo y las manos fuera.","Hay que saltar por encima del gusano con los dos pies en el aire a la vez, sin tocarlo.","Cuenta cuando los dos pies de todos aterrizan al otro lado. No hace falta extensión completa."], sync:"Posición inicial: el pecho de todos toca el suelo a la vez."},
+      {mv:"Hang Clean & Jerk (RM)", lv:["rx","int","esc"], pts:["Primero un deadlift. Cada rep empieza en hang: barra por debajo de la cadera, sin pasar la línea de la rodilla y con los brazos estirados.","Vale cualquier hang clean para llevarla a los hombros y cualquier shoulder to overhead para subirla.","Puedes ajustar el agarre entre los dos movimientos, siempre que la barra no pase por encima de la barbilla.","Cuenta arriba bloqueada: cadera, rodillas y codos extendidos, pies alineados y barra encima o un poco detrás de la cabeza, sin tocarla.","Los codos no tocan las piernas. Solo los pies tocan el suelo y solo las manos la barra.","En un complex, si haces una no rep empiezas desde cero: no cuenta ninguna."]}
+    ]
   }
 ];
 
@@ -452,6 +498,7 @@ const vWods = document.getElementById("view-wods");
 
 function stepHTML(s){
   if(s === "move") return "";
+  if(s.hd) return `<li class="step hd">${s.hd}${s.sub ? `<small>${s.sub}</small>` : ""}</li>`;
   if(s.bx) return `<li class="step jump"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span><span class="ht"><small>${s.bx}</small>${s.h||""}</span></li>`;
   const tag = s.sy ? `<span class="sy">synchro <b>${s.sy}</b></span>` : s.who ? `<span class="sy">${s.who}</span>` : "";
   return `<li class="step"><span class="reps">${s.r}</span><span class="mov">${s.mv}</span>${tag}</li>`;
