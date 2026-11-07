@@ -314,6 +314,19 @@ const FLOW3 = mv => [
   "En los complex de 2, 3 y 4 RM, si fallas una rep empiezas el complex desde cero. Todo tiene que estar validado antes del minuto 10.",
   "Es nulo si tú o la barra os salís de las 4 líneas de la zona, si no lleváis cierres o si la barra tiene distinto peso a cada lado. Coger discos de la calle de al lado se penaliza con WOD nulo.",
   "Al salir, dejad el material como estaba (discos ordenados y barras vacías en su sitio) o el 3A contará 0."];
+const DHSC = r => ({r, mv:"Double DB Hang Squat Clean", sy:4});
+const ROUNDS4 = rc => [[12,6,"A1"],[10,8,"A2"],[8,10,"A3"],[6,12,"A4"]].flatMap(([a,b,at],i) => [
+  {hd:`Ronda ${i+1}`}, DHSC(a), {r:2, mv:"× 10 m Farmer Carry", who:`<b>${at}</b>`, new:1}, DHSC(b), {r:2, mv:rc, who:"a repartir", new:rc!=="Rope Climb"}]);
+const FLOW4 = (rc, mmff) => [
+  "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+  "A la señal vais a la zona de DBs y hacéis 12 Double DB Hang Squat Clean en synchro de 4: dos atletas detrás de los otros dos, todos mirando a la finish line.",
+  "Después A1 (la chica) va al inicio del farmer carry y los otros 3 esperan en las DBs. Hace 2 tramos de 10 m: ida hacia la finish line y vuelta hacia el rack. Cada tramo es 1 rep.",
+  "Vuelve con el equipo a las DBs para 6 Double DB Hang Squat Clean en synchro. Podéis cambiar de peso, pero sin mover las DBs de su sitio.",
+  `Para cerrar la ronda, 2 ${rc} a repartir como queráis, sin mínimo por atleta. Sale uno a la cuerda y el resto espera en las DBs, donde se hace el relevo.`,
+  "Repetís 3 rondas más. En cada una hace el farmer un atleta distinto mientras los otros 3 esperan en las DBs: ronda 2 A2, ronda 3 A3 y ronda 4 A4." + (mmff ? " En equipos con dos chicas, A2 tiene que ser la otra chica: primero ellas y luego ellos." : ""),
+  "Las DBs bajan en una parte y suben en la otra: ronda 2, 10 y 8; ronda 3, 8 y 10; ronda 4, 6 y 12.",
+  "Tras la ronda 4 corréis a la FINISH LINE. El tiempo para cuando cruza el último del equipo.",
+  "Antes de salir, devolved los pesos del farmer carry a su posición inicial o el WOD contará 0."];
 const WODS = [
   {
     n:1, name:"The Acrobat", mods:["eq"], when:"Sábado mañana", where:"Navarra Arena · interior",
@@ -470,6 +483,34 @@ const WODS = [
       {mv:"Worm Deadlift", lv:["esc"], pts:["Empieza con el gusano en el suelo y todo el equipo de pie del mismo lado.","Cuenta con el gusano colgado de los brazos y todos extendidos: rodillas, cadera y cabeza.","No se puede agarrar el gusano por las correas.","Se permite touch and go, siempre que el gusano toque claramente el suelo."], sync:"Posición final: todos extendidos a la vez."},
       {mv:"Burpee Over Worm", lv:["rx","int","esc"], pts:["Empieza tumbado boca abajo a un lado del gusano, con el pecho y los dos muslos en el suelo. Dos atletas a cada lado, sin salir de las líneas de vuestro carril.","Para levantarte puedes saltar o dar pasos, pero antes de saltar el gusano tienes que tener los dos pies en el suelo y las manos fuera.","Hay que saltar por encima del gusano con los dos pies en el aire a la vez, sin tocarlo.","Cuenta cuando los dos pies de todos aterrizan al otro lado. No hace falta extensión completa."], sync:"Posición inicial: el pecho de todos toca el suelo a la vez."},
       {mv:"Hang Clean & Jerk (RM)", lv:["rx","int","esc"], pts:["Primero un deadlift. Cada rep empieza en hang: barra por debajo de la cadera, sin pasar la línea de la rodilla y con los brazos estirados.","Vale cualquier hang clean para llevarla a los hombros y cualquier shoulder to overhead para subirla.","Puedes ajustar el agarre entre los dos movimientos, siempre que la barra no pase por encima de la barbilla.","Cuenta arriba bloqueada: cadera, rodillas y codos extendidos, pies alineados y barra encima o un poco detrás de la cabeza, sin tocarla.","Los codos no tocan las piernas. Solo los pies tocan el suelo y solo las manos la barra.","En un complex, si haces una no rep empiezas desde cero: no cuenta ninguna."]}
+    ]
+  },
+  {
+    n:4, name:"Grip & Grind", mods:["eq"], when:"Domingo mañana", where:"Navarra Arena · interior",
+    format:"For time", tc:"09:00", score:"Tiempo cuando el último del equipo cruza la línea de meta. Si no acabáis en 9', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1alMwwxQh5l7LgjRGqhauOVISAbMt8EI5/view",
+    boxes:{
+      rx:"Farmer carry: 150/110 kg (chicos/chicas). DBs del equipo: 4 × 25, 2 × 20 y 2 × 17,5 kg. Cada tramo de farmer son 10 m y cuenta como 1 rep.",
+      int:"Farmer carry: 130/90 kg (chicos/chicas). DBs del equipo: 4 × 20 y 4 × 15 kg. Cada tramo de farmer son 10 m y cuenta como 1 rep.",
+      esc:"Farmer carry: 110/70 kg (chicos/chicas). DBs del equipo: 4 × 15 y 4 × 10 kg. Cada tramo de farmer son 10 m y cuenta como 1 rep."
+    },
+    vars:{ rx:ROUNDS4("Legless Rope Climb"), int:ROUNDS4("Rope Climb"), esc:ROUNDS4("Rope Climb") },
+    compare:{rows:["Rope Climb","Farmer (kg)","DBs (kg)"],
+      rx:["Legless","150/110","4×25 · 2×20 · 2×17,5"],
+      int:["Normal","130/90","4×20 · 4×15"],
+      esc:["Normal","110/70","4×15 · 4×10"],
+      foot:"Las reps de DB y el orden del farmer (A1 → A4) son iguales para todos."},
+    notes:[
+      {lv:["rx","int","esc"], t:"<b>Ojo</b> Si al salir no devolvéis los pesos del farmer carry a su sitio, el WOD cuenta 0."},
+      "A1, que abre el farmer carry, es una chica. En los equipos con dos chicas (Intermedio HHMM y Scaled), A2 tiene que ser la otra chica.",
+      "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
+    ],
+    flow:{ rx:FLOW4("Legless Rope Climb", false), int:FLOW4("Rope Climb", true), esc:FLOW4("Rope Climb", true) },
+    standards:[
+      {mv:"Double DB Hang Squat Clean", lv:["rx","int","esc"], pts:["Empieza en colgado: DBs por encima del suelo, colgando de los brazos con los codos extendidos.","La primera rep de cada serie se puede empezar con un clean directo desde el suelo.","Subes las DBs a los hombros en un solo movimiento y las recibes en sentadilla rompiendo el paralelo.","Cuenta de pie en rack frontal: rodillas y cadera extendidas, DBs tocando los hombros, codos por delante de las DBs y pies alineados.","Solo los pies tocan el suelo y las DBs solo tocan manos y hombros. No te puedes apoyar en ninguna parte del cuerpo."], sync:"Fin de la rep: todos extendidos a la vez."},
+      {mv:"Farmer Carry", lv:["rx","int","esc"], pts:["Un peso en cada mano, cogido del asa, con los brazos extendidos y el peso horizontal.","Cada rep empieza de pie con los dos pies claramente antes de la línea de inicio y acaba con los dos pies claramente pasada la línea final, sin tocarlas.","Pasa la línea con los dos pies antes de dar la vuelta o de dejar el peso en el suelo.","Si te marcan no rep, dejas el peso en el suelo, lo vuelves a coger y sigues desde ese punto."]},
+      {mv:"Legless Rope Climb", lv:["rx"], pts:["Empieza con los dos pies en el suelo; puedes saltar para arrancar.","Solo con la fuerza de los brazos: no se puede pinzar la cuerda con los pies ni con las piernas al subir.","Cuenta cuando una mano toca la marca o el objetivo de la estructura. La bajada es libre.","No te pueden sujetar la cuerda para estabilizarla entre subidas."]},
+      {mv:"Rope Climb", lv:["int","esc"], pts:["Empieza con los dos pies en el suelo; puedes saltar para arrancar.","Vale cualquier forma de subir.","Cuenta cuando una mano toca la marca o el objetivo de la estructura. La bajada es libre.","No te pueden sujetar la cuerda para estabilizarla entre subidas."]}
     ]
   }
 ];
