@@ -327,6 +327,21 @@ const FLOW4 = (rc, mmff) => [
   "Las DBs bajan en una parte y suben en la otra: ronda 2, 10 y 8; ronda 3, 8 y 10; ronda 4, 6 y 12.",
   "Tras la ronda 4 corréis a la FINISH LINE. El tiempo para cuando cruza el último del equipo.",
   "Antes de salir, devolved los pesos del farmer carry a su posición inicial o el WOD contará 0."];
+const PEND = n => [{hd:"Cash in", sub:"a repartir"}, {r:n, mv:"Toes to Bar", sy:2, new:1},
+  ...[[15,1],[12,2],[9,1],[6,2]].flatMap(([r,pa],i) => [{hd:`Ronda ${i+1}`, sub:`pareja ${pa} · ${pa===1 ? "A1 + A2" : "A3 + A4"}`},
+    {r, mv:"Snatch", sy:2}, {r:4, mv:"× 20 m Shuttle Run", sy:2}]),
+  {hd:"Cash out", sub:"a repartir"}, {r:n, mv:"Toes to Bar", sy:2, new:1}];
+const PFLOW = n => [
+  "Entráis a pista, pasáis por vuestro juez y os colocáis en la loseta de START.",
+  "Antes de empezar decís al juez quién forma la pareja 1 y la pareja 2. Las parejas son fijas todo el WOD y trabajan en I go you go; los T2B se reparten libremente.",
+  `Cash in: ${n} Toes to Bar en synchro de 2, repartidos como queráis y sin mínimo por atleta. Trabajan dos y descansan dos; los que descansan esperan detrás del rack, donde se hacen los cambios.`,
+  "Después la pareja 1 va a las barras para 15 Snatch en synchro, en fila uno detrás de otro y mirando a la finish line. La pareja 2 espera en la loseta de START.",
+  "Cada uno usa la barra de su categoría y género. Las barras no se mueven de su sitio (la ligera, delante).",
+  "Tras los snatch, 4 Shuttle Run de 20 m en synchro: cada uno son 10 m de ida y 10 de vuelta y cuenta como 1 rep.",
+  "Al acabar la ronda vais a la loseta de START y hacéis el relevo con la otra pareja chocando las manos.",
+  "Las parejas se alternan y ninguna repite dos rondas seguidas: ronda 2, pareja 2 con 12 snatch; ronda 3, pareja 1 con 9; ronda 4, pareja 2 con 6. El shuttle siempre es 4 × 20 m.",
+  `Para acabar, cash out igual que el cash in: ${n} Toes to Bar en synchro de 2, a repartir.`,
+  "Con todas las reps hechas, corréis a la FINISH LINE. El tiempo para cuando cruza el último del equipo."];
 const WODS = [
   {
     n:1, name:"The Acrobat", mods:["eq"], when:"Sábado mañana", where:"Navarra Arena · interior",
@@ -511,6 +526,31 @@ const WODS = [
       {mv:"Farmer Carry", lv:["rx","int","esc"], pts:["Un peso en cada mano, cogido del asa, con los brazos extendidos y el peso horizontal.","Cada rep empieza de pie con los dos pies claramente antes de la línea de inicio y acaba con los dos pies claramente pasada la línea final, sin tocarlas.","Pasa la línea con los dos pies antes de dar la vuelta o de dejar el peso en el suelo.","Si te marcan no rep, dejas el peso en el suelo, lo vuelves a coger y sigues desde ese punto."]},
       {mv:"Legless Rope Climb", lv:["rx"], pts:["Empieza con los dos pies en el suelo; puedes saltar para arrancar.","Solo con la fuerza de los brazos: no se puede pinzar la cuerda con los pies ni con las piernas al subir.","Cuenta cuando una mano toca la marca o el objetivo de la estructura. La bajada es libre.","No te pueden sujetar la cuerda para estabilizarla entre subidas."]},
       {mv:"Rope Climb", lv:["int","esc"], pts:["Empieza con los dos pies en el suelo; puedes saltar para arrancar.","Vale cualquier forma de subir.","Cuenta cuando una mano toca la marca o el objetivo de la estructura. La bajada es libre.","No te pueden sujetar la cuerda para estabilizarla entre subidas."]}
+    ]
+  },
+  {
+    n:5, name:"The Iron Pendulum", mods:["eq"], when:"Domingo mañana", where:"Navarra Arena · interior",
+    format:"For time", tc:"12:00", score:"Tiempo cuando el último del equipo cruza la línea de meta. Si no acabáis en 12', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1-5cbjKxHVLnFIrdySeP6_Wv3xdMlBtil/view",
+    boxes:{
+      rx:"Barra: 70/45 kg (chicos/chicas). Cada shuttle run de 20 m (10 de ida y 10 de vuelta) cuenta como 1 rep.",
+      int:"Barra: 50/35 kg (chicos/chicas). Cada shuttle run de 20 m (10 de ida y 10 de vuelta) cuenta como 1 rep.",
+      esc:"Barra: 40/25 kg (chicos/chicas). Cada shuttle run de 20 m (10 de ida y 10 de vuelta) cuenta como 1 rep."
+    },
+    vars:{ rx:PEND(66), int:PEND(52), esc:PEND(38) },
+    compare:{rows:["T2B in / out","Barra (kg)"],
+      rx:["66 / 66","70/45"], int:["52 / 52","50/35"], esc:["38 / 38","40/25"],
+      foot:"Los snatch (15-12-9-6) y los 4 × 20 m de shuttle de cada ronda son iguales para todos."},
+    notes:[
+      {lv:["rx","int","esc"], t:"<b>Ojo</b> El flow del briefing dice que el shuttle va primero hacia el rack y pone las parejas como 2-3-1, pero su tabla dice ida hacia la finish line y vuelta hacia el rack, y parejas 1-2-1-2. Aquí va lo de la tabla; si tenéis dudas, preguntad en el briefing previo."},
+      "Las parejas son fijas todo el WOD (A1 + A2 y A3 + A4) y se lo decís al juez antes de empezar. Los T2B del cash in y del cash out los reparte todo el equipo como quiera.",
+      "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email."
+    ],
+    flow:{ rx:PFLOW(66), int:PFLOW(52), esc:PFLOW(38) },
+    standards:[
+      {mv:"Toes to Bar", lv:["rx","int","esc"], pts:["Empieza colgado con los brazos extendidos, los pies sin tocar el suelo y los talones por detrás de la vertical de la barra.","Los pies tienen que pasar por detrás del plano de la barra en cada rep.","Cuenta cuando los dos pies tocan la barra a la vez, entre las manos."], sync:"Los dos pies de los dos atletas tocando la barra a la vez."},
+      {mv:"Snatch", lv:["rx","int","esc"], pts:["Empieza con la barra en el suelo y las manos en ella.","Del suelo a encima de la cabeza en un solo movimiento. Vale muscle, power, squat o split.","Cuenta arriba bloqueada: rodillas, cadera y codos extendidos, barra encima o un poco detrás de la cabeza, sin tocarla, y pies alineados.","Solo los pies tocan el suelo y solo las manos la barra. No se puede rebotar la barra entre reps seguidas."], sync:"Posición final: triple extensión de los dos a la vez."},
+      {mv:"Shuttle Run", lv:["rx","int","esc"], pts:["Cada rep empieza con los dos pies claramente antes de la línea de inicio y acaba con los dos pies claramente pasada la línea final, sin tocarlas.","En cada giro los dos pies cruzan la línea y una mano toca el suelo más allá de ella. En la primera y la última rep no hace falta tocar con la mano.","Si te marcan no rep, vuelves a la línea anterior más cercana."], sync:"Posición final: al menos un dedo de cada atleta tocando el suelo pasada la línea, a la vez."}
     ]
   }
 ];
