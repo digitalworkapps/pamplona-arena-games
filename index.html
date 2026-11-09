@@ -272,7 +272,7 @@ const EVENT = {
   name: "Pamplona Arena Games 26",
   logo: "./icons/logo.webp",   // logo oficial del evento (null para quitarlo de la cabecera)
   venue: "Navarra Arena · Pl. Aizagerria 1, Pamplona",
-  dates: [["Viernes 13 nov","Acreditaciones, bienvenida y briefing presencial"],["Sábado 14 nov","Competición"],["Domingo 15 nov","Competición y final (top 10 por categoría)"]],
+  dates: [["Viernes 13 nov","Acreditaciones y briefing presencial. Elite individual compite por la tarde (WODs 1 y 2)"],["Sábado 14 nov","Competición"],["Domingo 15 nov","Competición y final (top 10 por categoría)"]],
   links: [["Circle21 (WODs, flow y heats)","https://circle21.events/pamplona-arena-games-26?tab=workouts"],["Instagram @pamplonarenagames","https://www.instagram.com/pamplonarenagames/"]]
 };
 
@@ -314,6 +314,46 @@ const FLOW3 = mv => [
   "En los complex de 2, 3 y 4 RM, si fallas una rep empiezas el complex desde cero. Todo tiene que estar validado antes del minuto 10.",
   "Es nulo si tú o la barra os salís de las 4 líneas de la zona, si no lleváis cierres o si la barra tiene distinto peso a cada lado. Coger discos de la calle de al lado se penaliza con WOD nulo.",
   "Al salir, dejad el material como estaba (discos ordenados y barras vacías en su sitio) o el 3A contará 0."];
+/* Elite individual. Cuando chicos y chicas cambian algo más que el peso, van dos fichas con cats:[categoría]. */
+const MF = (base, m, f) => [{...base, ...m, cats:["ind-elite-m"]}, {...base, ...f, cats:["ind-elite-f"]}];
+const DUDAS = "Las dudas se resuelven en los briefings previos a la zona de calentamiento. La organización no responde por Instagram ni por email.";
+const CALLES = "Las chicas van en las calles pares y los chicos en las impares.";
+const E_SNATCH = {mv:"Snatch", lv:["elite"], pts:["Empieza con la barra en el suelo y las manos en ella.","Del suelo a encima de la cabeza en un solo movimiento. Vale muscle, power, squat o split.","Cuenta arriba bloqueada: rodillas, cadera y codos extendidos, barra encima o un poco detrás de la cabeza, sin tocarla, y pies alineados.","Solo los pies tocan el suelo y solo las manos la barra."]};
+const TRUNK = cal => [[cal[0],9],[cal[1],7],[cal[2],5],[cal[3],3]].flatMap(([c,n],i) => [{hd:`Ronda ${i+1}`},
+  {r:c, mv:"Cal SkiErg", new:1}, {r:50, mv:"m Sandbag Bear Hug Carry"}, {r:n, mv:"Sandbag Over Trunk + Jump Over"}]);
+const TRUNKFLOW = cal => [
+  "Entras a pista, pasas por tu juez y te colocas en la loseta de START.",
+  `A la señal vas al SkiErg y haces ${cal[0]} calorías.`,
+  "Coges el sandbag y haces los 50 m de bear hug carry. Cada tramo de 10 m es 1 rep y hay líneas en el suelo para marcarlos.",
+  "Al acabar quedas junto al tronco para los 9 Sandbag Over Trunk: el saco pasa por encima y tú siempre saltando, nunca por debajo.",
+  "Con la última rep cargas el sandbag y lo llevas a la estación del SkiErg.",
+  `Repites 3 rondas más: ${cal[1]}, ${cal[2]} y ${cal[3]} calorías de SkiErg, siempre 50 m de carry, y 7, 5 y 3 Sandbag Over Trunk.`,
+  "Tras la ronda 4 corres a la FINISH. El tiempo para cuando la cruzas.",
+  "Antes de salir devuelve el sandbag a su posición inicial o el WOD contará 0."];
+const ACRO = n => [{r:35, mv:"Chest to Bar"}, {r:10, mv:"Burpee Box Jump Over", bx:"altura 1", h:"50 cm"}, "move",
+  {r:n, mv:"Bar Muscle Up", new:1}, {r:10, mv:"Burpee Box Jump Over", bx:"altura 2", h:"60 cm"}, "move",
+  {r:n, mv:"Ring Muscle Up", new:1}, {r:10, mv:"Burpee Box Jump Over", bx:"altura 3", h:"67,5 cm"}, "move",
+  {r:n, mv:"Bar Muscle Up", new:1}, {r:10, mv:"Burpee Box Jump Over", bx:"altura 4", h:"75 cm"}, {r:35, mv:"Chest to Bar"}];
+const ACROFLOW = n => [
+  "Entras a pista, pasas por tu juez y te colocas en la loseta de START de tu calle. " + CALLES,
+  "A la señal vas al rack para los 35 Chest to Bar.",
+  "Luego, 10 Burpee Box Jump Over con el cajón en la altura 1.",
+  "Al acabar avanzas el cajón a la siguiente zona y lo subes a la altura siguiente con los acoples.",
+  `Repites el bloque con otro gimnástico: ${n} Bar Muscle Up con la altura 2, ${n} Ring Muscle Up con la altura 3 y ${n} Bar Muscle Up con la altura 4, siempre con 10 Burpee Box Jump Over.`,
+  "Terminas con otros 35 Chest to Bar y corres a la FINISH LINE. El tiempo para cuando la cruzas.",
+  "Antes de salir deja el cajón en su posición y altura inicial, con los acoples que hayas usado, o el WOD contará 0."];
+const GEARS = (f) => [{hd:"5A · Max Snatch", sub:"0:00 – 5:00"}, {r:5, mv:"Ventanas de 30 s · RM Snatch", who:`<b>${f ? "0–30" : "30–60"}</b> s`},
+  {hd:"5B · Max Clean & Jerk", sub:"5:00 – 10:00"}, {r:5, mv:"Ventanas de 30 s · RM Clean & Jerk", who:`<b>${f ? "0–30" : "30–60"}</b> s`}];
+const GEARSFLOW = f => [
+  "Entras a pista, pasas por tu juez y vas a la zona de levantamiento de tu calle. " + CALLES,
+  "Antes de empezar puedes cargar la barra con el primer peso, pero no calentar ni hacer ninguna rep.",
+  f ? "A la señal empieza la primera ventana: del segundo 0 al 30 tienes que sacar tu RM de Snatch. En la otra mitad del minuto levantan los chicos y tú ajustas el peso para la siguiente."
+    : "A la señal empiezan las chicas y tú esperas delante de tu barra sin tocarla. Del segundo 30 al 60 te toca sacar tu RM de Snatch, y en la mitad siguiente ajustas el peso mientras levantan ellas.",
+  "Así durante 5 minutos. Del minuto 5 al 10 haces lo mismo, pero con Clean & Jerk.",
+  "En tu ventana haces los intentos que quieras, cargando y descargando libremente. Antes de cada intento dices el peso al juez y no sueltes la barra hasta que lo valide.",
+  "Cada levantamiento tiene que quedar validado dentro de tus 30 segundos, y la zona tiene que estar despejada.",
+  "Es nulo si tú o la barra os salís de las 4 líneas, si no llevas cierres o si la barra tiene distinto peso a cada lado. Coger discos de la calle de al lado se penaliza con WOD nulo.",
+  "El WOD acaba en el minuto 10. Antes de salir deja el material como estaba: discos ordenados y barra vacía en su sitio."];
 const DHSC = r => ({r, mv:"Double DB Hang Squat Clean", sy:4});
 const ROUNDS4 = rc => [[12,6,"A1"],[10,8,"A2"],[8,10,"A3"],[6,12,"A4"]].flatMap(([a,b,at],i) => [
   {hd:`Ronda ${i+1}`}, DHSC(a), {r:2, mv:"× 10 m Farmer Carry", who:`<b>${at}</b>`, new:1}, DHSC(b), {r:2, mv:rc, who:"a repartir", new:rc!=="Rope Climb"}]);
@@ -552,6 +592,74 @@ const WODS = [
       {mv:"Snatch", lv:["rx","int","esc"], pts:["Empieza con la barra en el suelo y las manos en ella.","Del suelo a encima de la cabeza en un solo movimiento. Vale muscle, power, squat o split.","Cuenta arriba bloqueada: rodillas, cadera y codos extendidos, barra encima o un poco detrás de la cabeza, sin tocarla, y pies alineados.","Solo los pies tocan el suelo y solo las manos la barra. No se puede rebotar la barra entre reps seguidas."], sync:"Posición final: triple extensión de los dos a la vez."},
       {mv:"Shuttle Run", lv:["rx","int","esc"], pts:["Cada rep empieza con los dos pies claramente antes de la línea de inicio y acaba con los dos pies claramente pasada la línea final, sin tocarlas.","En cada giro los dos pies cruzan la línea y una mano toca el suelo más allá de ella. En la primera y la última rep no hace falta tocar con la mano.","Si te marcan no rep, vuelves a la línea anterior más cercana."], sync:"Posición final: al menos un dedo de cada atleta tocando el suelo pasada la línea, a la vez."}
     ]
+  },
+  /* ---------- Elite individual (briefings INDY, 9 nov 2026) ---------- */
+  {
+    n:1, name:"The Chase", mods:["ind"], when:"Viernes tarde", where:"Navarra Arena · exterior",
+    format:"For time", tc:"15:00", score:"Tiempo al cruzar la línea de meta. Si no acabas en 15', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1daB1DF82UfUvmud24iwdvPqUzuzAl7BZ/view",
+    vars:{ elite:[{r:750, mv:"m Row"}, {r:750, mv:"m Run"}, {r:500, mv:"m Row"}, {r:500, mv:"m Run"}, {r:250, mv:"m Row"}, {r:250, mv:"m Run"}] },
+    notes:["Respeta el recorrido marcado: empujar a otro atleta a propósito penaliza con +10 segundos o +3 reps.", DUDAS],
+    flow:["Entras a pista, pasas por tu juez y te colocas en la línea de salida del WOD.","A la señal vas a tu remo para hacer 750 m y después sales a correr 750 m por el recorrido marcado.","Repites dos bloques más, cada vez más cortos: 500 m de remo y 500 de carrera, y luego 250 y 250.","Al volver de la última carrera vas directo a la FINISH LINE. El tiempo para cuando la cruzas."],
+    standards:[{mv:"Row", lv:["elite"], pts:["El contador tiene que estar a 0 antes de empezar, y eso es cosa tuya.","Empiezas sentado con las piernas estiradas y las manos en la cintura, y remas sentado con los dos pies en las plataformas.","Cuenta sentado y con los metros en la pantalla. Puedes sacar los pies antes de acabar, pero no levantarte.","Si se acaba el tiempo en el remo, cuenta lo que marque la pantalla cuando la máquina pare del todo. Cada palada fuera de tiempo resta 100 m."]}]
+  },
+  ...MF({
+    n:2, name:"Trunk or Treat", mods:["ind"], when:"Viernes tarde", where:"Navarra Arena · exterior",
+    format:"For time", tc:"13:00", score:"Tiempo al cruzar la línea de meta. Si no acabas en 13', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/18DxkZKiAF9_uz4NKuje1zkBF95wLGow4/view",
+    notes:[{lv:["elite"], t:"<b>Ojo</b> Si al salir no devuelves el sandbag a su sitio, el WOD cuenta 0."}, DUDAS],
+    standards:[
+      {mv:"SkiErg", lv:["elite"], pts:["El contador tiene que estar a 0 antes de empezar, y eso es cosa tuya.","Esquías con los dos pies en la plataforma y usando las dos asas, y al llegar a las calorías sigues con los dos pies en la plataforma.","Si se acaba el tiempo en el SkiErg, cuenta lo que marque la pantalla cuando pare del todo. Cada palada fuera de tiempo resta 10 calorías."]},
+      {mv:"Bear Hug Sandbag Carry", lv:["elite"], pts:["El saco va delante del cuerpo, abrazado con las dos manos entre la clavícula y la cadera, y siempre por encima de la cadera.","Cada tramo empieza con los dos pies claramente antes de la línea y acaba con los dos pies claramente pasada la línea final, sin tocarlas. Primero pasas los pies y luego sueltas el saco.","Si te marcan no rep, dejas el saco en el suelo, lo vuelves a cargar y sigues desde ese punto."]},
+      {mv:"Sandbag Over Trunk + Jump Over", lv:["elite"], pts:["Empiezas con el saco y tú al mismo lado del tronco, y el saco siempre sale del suelo.","Levantas el saco y lo lanzas por encima del tronco; antes puedes apoyarlo en el hombro.","Después pasas tú saltando por encima del tronco. Cuenta cuando el saco y tus dos pies tocan el suelo al otro lado.","Si te marcan no rep sigues normal: el saco nunca vuelve atrás."]}]
+  }, {vars:{elite:TRUNK([40,30,20,10])}, flow:TRUNKFLOW([40,30,20,10]), boxes:"Sandbag de 150 lb (unos 68 kg). Cada tramo de 10 m del carry cuenta como 1 rep."},
+     {vars:{elite:TRUNK([32,24,16,8])},  flow:TRUNKFLOW([32,24,16,8]),  boxes:"Sandbag de 100 lb (unos 45 kg). Cada tramo de 10 m del carry cuenta como 1 rep."}),
+  ...MF({
+    n:3, name:"The Acrobat", mods:["ind"], when:"Sábado mañana", where:"Navarra Arena · interior",
+    format:"For time", tc:"11:00", score:"Tiempo al cruzar la línea de meta. Si no acabas en 11', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/11zCZ1bwlmLjITgXB-Hg08zIhtTumhU8Y/view",
+    boxes:"Cajón: 50, 60, 67,5 y 75 cm (alturas 1 a 4). Después de cada bloque avanzas el cajón y lo subes de altura con los acoples.",
+    notes:[{lv:["elite"], t:"<b>Ojo</b> Si al salir no dejas el cajón en su posición y altura inicial, con los acoples, el WOD cuenta 0."},
+      {lv:["elite"], t:"<b>Ojo</b> El flow del briefing pone los BMU en la ronda 3 y los RMU en la 4, pero su tabla dice BMU, RMU y BMU. Aquí va lo de la tabla; si tienes dudas, pregunta en el briefing previo."}, DUDAS],
+    standards:[
+      {mv:"Burpee Box Jump Over", lv:["elite"], pts:["Empiezas tumbado boca abajo a un lado del cajón, con el pecho y los dos muslos en el suelo y sin salirte de tu carril.","Saltas con los dos pies a la vez y los dos tocan la parte de arriba del cajón. La bajada es libre.","Solo tocas el cajón con los pies y no te puedes tocar por debajo de la cintura. No hace falta extensión completa.","También vale saltar el cajón entero por encima, sin tocarlo y sin rodearlo.","Cuenta cuando tus dos pies aterrizan al otro lado."]},
+      {mv:"Chest to Bar", lv:["elite"], pts:["Empiezas colgado con los brazos estirados y los pies sin tocar el suelo.","Cuenta cuando el pecho toca claramente la barra a la altura de la clavícula o por debajo.","Vale cualquier agarre, y estricto, kipping o butterfly."]},
+      {mv:"Bar Muscle Up", lv:["elite"], pts:["Empiezas colgado con las dos manos, los codos estirados y los pies sin tocar el suelo.","Hay que pasar por un dip entre el tirón y el empuje, y solo las manos tocan la barra.","En el kipping los pies no pueden subir por encima de la barra, y no puedes tocar la parte vertical de la estructura.","Cuenta arriba en apoyo, con los codos estirados y los hombros encima o un poco por delante de la barra. Arriba no puedes soltar las manos ni apoyar el torso."]},
+      {mv:"Ring Muscle Up", lv:["elite"], pts:["Empiezas colgado de las anillas con los codos estirados y los pies sin tocar el suelo.","Hay que pasar por parte del dip antes de bloquear arriba, y en el kipping los pies no pueden pasar de la parte baja de las anillas.","No puedes soltar las anillas en ningún momento.","Cuenta arriba en apoyo, con los codos estirados y los hombros encima o un poco por delante de las manos."]}]
+  }, {vars:{elite:ACRO(15)}, flow:ACROFLOW(15)}, {vars:{elite:ACRO(12)}, flow:ACROFLOW(12)}),
+  {
+    n:4, name:"Ascending Chaos", mods:["ind"], when:"Sábado tarde", where:"Navarra Arena · interior",
+    format:"For time", tc:"11:00", score:"Tiempo al cruzar la línea de meta. Si no acabas en 11', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1JsSAx9qU-qiJlxt7BVia_5QbGx9UE0jl/view",
+    boxes:"Barra: 60 kg chicos y 40 kg chicas. Cada tramo de 5 m de HSW unbroken es 1 rep: ida hacia la finish line y vuelta hacia el rack. El último es solo de ida.",
+    vars:{ elite:[{r:2, mv:"× 5 m HSW Ramp"}, {r:15, mv:"Thruster"}, {r:2, mv:"× 5 m HSW Ramp"}, {r:20, mv:"Thruster"}, {r:2, mv:"× 5 m HSW Ramp"}, {r:25, mv:"Thruster"}, {r:1, mv:"× 5 m HSW Ramp"}] },
+    notes:[{lv:["elite"], t:"<b>Ojo</b> El briefing se contradice si te caes en el HSW: el flow dice que vuelves a la línea de 5 m más cercana y el standard, que empiezas la rampa desde cero. Pregúntalo en el briefing previo."}, CALLES, DUDAS],
+    flow:["Entras a pista, pasas por tu juez y te colocas en la loseta de START de tu calle. " + CALLES,"A la señal empiezas con el HSW Ramp: 2 tramos de 5 m unbroken atravesando la rampa, la ida hacia la finish line y la vuelta hacia el rack.","Antes de volver tienes que pasar claramente la línea de 5 m con las dos manos. Cada tramo es 1 rep.","Después, 15 Thruster.","Repites HSW + Thruster dos veces más, con 20 y luego 25 Thruster.","Para acabar, un último tramo de 5 m de HSW, solo de ida hacia la finish line. Cuando las dos manos pasan la línea, corres a la FINISH LINE y el tiempo para cuando la cruzas."],
+    standards:[
+      {mv:"HSW Ramp", lv:["elite"], pts:["Se camina solo con las manos, hacia delante, atravesando la rampa.","Cada rep empieza con las dos manos claramente antes de la línea de inicio y acaba con las dos manos claramente pasada la línea final, sin tocarlas. Hasta pasar la línea, solo las manos tocan el suelo.","Los dedos pueden salirse de la rampa, pero no te puedes agarrar a sus bordes."]},
+      {mv:"Thruster", lv:["elite"], pts:["Empiezas abajo de la sentadilla rompiendo el paralelo, con la barra en los hombros y los codos por delante. La primera rep de cada serie puede empezar con un squat clean.","En un solo movimiento, sin pararte, subes y empujas la barra por encima de la cabeza.","Cuenta arriba con rodillas, cadera y codos extendidos, la barra encima o un poco detrás de la cabeza y los pies alineados.","No puedes volver a flexionar las rodillas cuando la barra sale de los hombros (nada de push jerk) ni tocarte las piernas con los brazos o los codos."]}]
+  },
+  ...MF({
+    n:5, name:"Shifting Gears", mods:["ind"], when:"Sábado tarde", where:"Navarra Arena · interior",
+    format:"Max weight", tc:"10:00", score:"5A: tu RM de Snatch. 5B: tu RM de Clean & Jerk.",
+    pdf:"https://drive.google.com/file/d/1uidTYsELoftv4VNdiHprKCMZdSGlBM2g/view",
+    notes:[{lv:["elite"], t:"<b>Ojo</b> Si al salir no dejas el material como estaba (discos ordenados y barra vacía en su sitio), pierdes el resultado. El briefing dice «la parte 3A», que parece una errata por la 5A."}, DUDAS],
+    standards:[E_SNATCH,
+      {mv:"Clean & Jerk", lv:["elite"], pts:["Empieza con la barra en el suelo y las manos en ella. Con barra vacía o discos pequeños, cada rep empieza con la barra claramente por debajo de las rodillas.","Del suelo a los hombros en un movimiento (cualquier clean) y de los hombros arriba en otro (press, push press, push jerk o split).","Puedes ajustar el agarre entre los dos movimientos si la barra no pasa de la barbilla.","Cuenta arriba bloqueada: rodillas, cadera y codos extendidos, barra encima o un poco detrás de la cabeza y pies alineados.","Solo los pies tocan el suelo y los codos no pueden tocar las piernas."]}]
+  }, {vars:{elite:GEARS(false)}, flow:GEARSFLOW(false), boxes:"Cada minuto levantas del segundo 30 al 60; las chicas, del 0 al 30. Barra de 20 kg. En tu ventana haces todos los intentos que quieras."},
+     {vars:{elite:GEARS(true)},  flow:GEARSFLOW(true),  boxes:"Cada minuto levantas del segundo 0 al 30; los chicos, del 30 al 60. Barra de 15 kg. En tu ventana haces todos los intentos que quieras."}),
+  {
+    n:6, name:"The Iron Pendulum", mods:["ind"], when:"Domingo mañana", where:"Navarra Arena · interior",
+    format:"For time", tc:"10:00", score:"Tiempo al cruzar la línea de meta. Si no acabas en 10', reps acumuladas.",
+    pdf:"https://drive.google.com/file/d/1Bjeq9KKoE5YiF1zH9t_jVdK4ehJIhhY5/view",
+    boxes:"Farmer carry: 160 kg chicos y 120 kg chicas. Barra: 70 kg chicos y 45 kg chicas. Cada tramo de farmer son 10 m (ida hacia la finish line y vuelta hacia el rack) y cuenta como 1 rep.",
+    vars:{ elite:[{r:22, mv:"Toes to Bar"}, {r:2, mv:"× 10 m Farmer Carry"}, {r:11, mv:"Snatch"}, {r:2, mv:"× 10 m Farmer Carry"}, {r:22, mv:"Toes to Bar"}, {r:2, mv:"× 10 m Farmer Carry"}, {r:11, mv:"Snatch"}, {r:2, mv:"× 10 m Farmer Carry"}, {r:22, mv:"Toes to Bar"}] },
+    notes:[{lv:["elite"], t:"<b>Ojo</b> Si al salir no devuelves los pesos del farmer carry a su sitio, el WOD cuenta 0."}, "Circle21 pone 9' en la ficha, pero su texto y el briefing dicen 10' de time cap.", CALLES, DUDAS],
+    flow:["Entras a pista, pasas por tu juez y te colocas en la loseta de START de tu calle. " + CALLES,"A la señal vas al rack para los 22 Toes to Bar.","Luego 2 tramos de 10 m de farmer carry: ida hacia la finish line y vuelta hacia el rack. Cada tramo es 1 rep.","Después 11 Snatch y otros 2 tramos de farmer carry.","Repites la secuencia: 22 Toes to Bar, 2 × 10 m de farmer, 11 Snatch y 2 × 10 m de farmer.","Terminas con otros 22 Toes to Bar y corres a la FINISH LINE. El tiempo para cuando la cruzas.","Antes de salir devuelve los pesos del farmer carry a su posición inicial o el WOD contará 0."],
+    standards:[
+      {mv:"Toes to Bar", lv:["elite"], pts:["Empieza colgado con los brazos extendidos, los pies sin tocar el suelo y los talones por detrás de la vertical de la barra.","Los pies tienen que pasar por detrás del plano de la barra en cada rep.","Cuenta cuando los dos pies tocan la barra a la vez, entre las manos."]},
+      {mv:"Farmer Carry", lv:["elite"], pts:["Llevas la estructura en las manos, con los brazos extendidos y apuntando hacia abajo.","Cada rep empieza con los dos pies claramente antes de la línea de salida y acaba con los dos pies claramente pasada la de meta.","Pasa la línea con los dos pies antes de girar o de dejar la estructura en el suelo."]},
+      {...E_SNATCH, pts:[...E_SNATCH.pts, "No se puede rebotar la barra entre reps seguidas."]}]
   }
 ];
 
@@ -612,7 +720,7 @@ function wodCard(w){
     <details class="blk"><summary>Cómo se hace (flow)<small>${flow.length} pasos</small></summary>
       <div class="blk-body"><ol>${flow.map(t=>`<li>${t}</li>`).join("")}</ol>
       <p><b>Score:</b> ${w.score}</p></div></details>
-    <details class="blk"><summary>Standards de ${LEVELS[lv]}<small>${stds.length} movimientos</small></summary>
+    <details class="blk"><summary>Standards de ${LEVELS[lv]}<small>${stds.length} movimiento${stds.length === 1 ? "" : "s"}</small></summary>
       <div class="blk-body">${stds.map(s=>`<div class="std"><h4>${s.mv}</h4><ul>${s.pts.map(p=>`<li>${p}</li>`).join("")}${s.sync ? `<li class="sync">Synchro: ${s.sync}</li>` : ""}</ul></div>`).join("")}</div></details>
     </div>
     <div class="wod-foot"><span>Hora de tu heat: pendiente de publicar</span>
@@ -622,7 +730,7 @@ function wodCard(w){
 
 function renderWods(){
   const cat = CAT[state.cat];
-  const list = WODS.filter(w=>w.mods.includes(cat.m));
+  const list = WODS.filter(w=>w.mods.includes(cat.m) && (!w.cats || w.cats.includes(cat.k)));
   vWods.innerHTML = `
     <div class="me">
       <span class="eyebrow">${MODS[cat.m]} · ${cat.comp}</span>
