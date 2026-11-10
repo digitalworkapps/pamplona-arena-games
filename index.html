@@ -191,6 +191,20 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 .heatpick{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-size:18px;text-transform:uppercase;letter-spacing:.04em}
 .heatpick select{flex:1;min-width:0;font:600 15px var(--body);padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
 .heatpick select option{color:#111}
+.teamsearch input{width:100%;font:500 16px var(--body);padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
+.teamsearch input::placeholder{color:var(--ink-faint)}
+.tres{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.tres button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:14px}
+.tres button:hover,.tres button:focus-visible{border-color:var(--red-txt)}
+.tres b{display:block;overflow-wrap:anywhere}
+.tres small{color:var(--ink-dim);overflow-wrap:anywhere}
+.tres .hl{white-space:nowrap;text-align:right;font-family:var(--cond);font-size:17px;letter-spacing:.03em;text-transform:uppercase}
+.tres .hl small{display:block;font-family:var(--body);font-size:11px;letter-spacing:0;text-transform:none}
+.myteam{font-size:14px}
+.myteam button{all:unset;cursor:pointer;color:var(--red-txt);font-size:13px;margin-left:6px;text-decoration:underline}
+.lanes li span:first-child{min-width:0;overflow-wrap:anywhere;display:flex;gap:6px}
+.lanes li span:last-child{font-size:12px}
+.lanes li span:first-child i{font-style:normal;color:var(--ink-faint);flex:0 0 18px}
 .allheats{margin-top:6px;border-top:1px solid var(--line);padding-top:8px}
 .allheats summary{cursor:pointer;font-family:var(--cond);font-size:20px;letter-spacing:.04em;text-transform:uppercase}
 .box p{margin:0;color:var(--ink-dim);font-size:14px}
@@ -759,15 +773,23 @@ function wodCard(w){
   </article>`;
 }
 
+/* Equipos por heat (start list de Circle21, 10-nov). La calle es la posición en la lista. */
+const TEAMS = {"1":[["SYNCROQUETAS VTC","VULTUR TRAINING CLUB"],["TORINO BULLS","TORINO BOX / CROSSFI…"],["PAULOMOS","ALFA FUNCTIONAL FITN…"],["WARRIORS","TRAINING 8A"],["POLIS Y CACOS","CROSSFIT IRUÑA"],["WODIDOS","MG FITNESS"],["ROOCKIES","MGFITNESS"],["TWM","PIRATAS BOX"],["TEEN TITANS","ELEMENT PROGRAM"],["BUCK FURPEES","CROSSFIT IRUN"],["KULONAS","INDEPENDIENTE"],["CAOS SINCRONIZADO","CROSSFIT MOHWA"],["BOTIFARRA CATALANA","PROJECT RAIDHO BOX"],["MANRUSIA","WHY NOT CROSSFIT"],["SUPERMANOS BROS","KRONOS BOX"],["EGURRE ILLO","KOXKA CROSSFIT"],["DONUT GIVE UP","CROSSFIT TEMPUS"],["WITH THE FLOW","CROSSFIT IRUÑA"],["CROSS DE EMERGENCIA","SANTANDER CROSSFIT"],["TEAM RESTART","DELTA BOX"]],"2":[["AIRLESS IRUNA TEAM","CROSSFIT IRUÑA"],["JERKETAN JARRAI","INDEPENDIENTE"],["THE PATI'S","ELEVEN"],["CAOSFIT","VULTUR TRAINING CLUB"],["IRUNA BEAST MODE","CROSSFIT IRUÑA"],["HASTA QUE LOS BURPEES NOS SEPAREN","INDEPENDIENTE"],["SYNCROQUETAS","CROSSFIT LAFÁBRICA"],["CROISSANFITEROS","KRONOS BOX"],["VAMOS VIENDO","CROSSFIT IRUÑA"],["ARROZ CON COCHINILLO","HYBRID SEGOVIA"],["4 Y SIN OXIGENO","EBROBOX"],["TORPES PERO MAJAS","ARIMA TRAINING"],["IRONHAWKIES","IRONHAWK BOX VICALVA…"],["WODRIA HABER PREO","INDAR CROSSFIT"],["GUSANITO TEAM","CROSSFIT BAJO GÁLLEG…"],["LOS GORDIS","CROSSFIT NEMESIS"],["IRUKITOS","IRUKA"],["DEPORTES GUERRA: CAMPO, PLAYA Y SIERRA","WILDFIRE"],["AMSIOSOS","CROSSFIT NEMESIS"],["WOD THE HELL","CROSSFIT WAN"]],"3":[["AS MANY PERREO AS POSSIBLE","INDAR CROSSFIT"],["MENDAUR TEAM","GOIENA"],["STRONGER THINGS","SK CROSSFIT"],["DRAGON WALLBALL","CROSSBOX ZUERA"],["GOITXURI","GOIENA"],["GLITTER GAINS AND BOYS","CROSSFIT IRUN"],["FOUR FOR FUN","DEVIL BOX"],["TRES HALCONES Y MEDIO","INDEPENDIENTE"],["2 PA 2 MAZO FRIKIS","INDEPENDIENTE"],["LOS CROSSFI-THERIAN","UTGARD BOX"],["PIRATILLAS","CROSSFIT QLAB"],["985 CULINES DE ACERO","985 FITNESS"],["LOS VEGETAS","WHITE PEAK"],["THE PITI BLINDERS","INDEPENDIENTE"],["IMPUNTUALS","CROSSFIT LA FÁBRICA"],["PATORRICIDIO","INDEPENDIENTE"],["EMOMENTOS CRITICOS","COURAGE ALCORCÓN"],["WOD AHORA WINE DESPUES","CROSSFIT LOGROÑO"],["TEAM PACO","INDEPENDIENTE"],["LOS GUSANITOS PAPA","CROSSFIT DEUSTO"]],"4":[["SNATCHIRULOS","KRONOS / BE COOL"],["WODAHOLIC MONGUERS","THE BOX FIT AND FIGH…"],["DEFICIT DE DIGNIDAD","IRONHAWK VICALVARO"],["APRIETA EL CULO","QUEIRON"],["985 NO ME CARGUES LA BARRA","985 FITNESS"],["985 SNATCH & CHILL","985 FITNESS"],["THE BOOTIES AND THE BEASTS","ATALANTA TRAINING CE…"],["DENGUE MERENGUE","RUNA"],["BARBIES COMPLEMENTOS","PHOENIX BOX"],["HAUTSI TA BARRATU","BULLDOZER SAKANA"],["GOXUEK","QUEIRON CROSSFIT"],["SUICIDE SQUATS","BECOOL CROSSFIT"],["SK-P","INDEPENDIENTE"],["CHOCO MILK","CROSSFIT EIBAR"],["POKE-WALL-BALL","ATALANTA TRAINING CE…"],["LAS LLORONAS","INDEPENDIENTE"],["GOES TO BAR","EISEN CROSSBOX"],["TOES TO BAR DE COPAS TEAM","TRAIN FOR YOU DENIA"],["GURIPIS 3.0","MONCALVILLO TRAINING"],["REVENTAOS TEAM","CROSSFIT IRUÑA"]],"5":[["TXIS TU BAR","ALFA BOX"],["FARINHA PROGRAM","LA FÁBRICA"],["COLEGA, ¿DONDE ESTA MARKITOS?","WHITE PEAK"],["EMON EGURRE","ARIMA"],["LOS 4 ELEMENTOS","MONCALVILLO TRAINING"],["TEMPUS CREW","CROSSFIT TEMPUS"],["LOS TINKY WINKYS","BLACK GRIZZLY CROSSF…"],["RAIDHOS Y RELAMPAGOS","PROJECT RAIDHO BOX"],["FAYUELOS DE FIERRO","INDEPENDIENTE"],["LAS MUNECAS RUSAS","CROSSFIT TEMPUS"],["EL HUESO TEAM","PIRATAS BOX"],["TOCINITOS DE CIELO","TORINO BOX"],["COMPRAMOS ORO","VIA CROSSFIT"],["KUNG FU PANZAS SINCRONOCIMIENTO","CROSSFIT PAMPLONA"],["INDARGUNE","INDEPENDIENTE"],["AREPAS Y BURPEES","ROCALLA BOX"],["CASH IN PANTHERS","GREEN PANTHER BOX"],["THUNDERBOX","THUNDERBOX"],["LOS TXIKI-LIONS","INDEPENDIENTE"],["EUTSI GOIARI","INDARBOX"]],"6":[["THE GORBEIA MOTHS","GORBEIA BOX"],["BECARIOS KF","KIPPING FUN"],["MAPACHES","GARES TRAINING"],["FOURPEES","INDEPENDIENTE"],["PRO REST","KRONOS BOX"],["HERMANAS TEAM","R1 BOX"],["5 VILLENSES","5V BOX TRAINING"],["GUSANOS DESCOORDINADOS","CROSSFIT PAMPLONA"],["FOFISANOS","INDEPENDIENTE"],["WODEROSOS","CROSSFIT GASTEIZ"],["LA ULTIMA Y NOS VAMOS","KOXKA CROSSFIT"],["DESPERFECTOS ASOCIADOS","CROSSFIT PAMPLONA"],["PUPAS TEAM","INDEPENDIENTE"],["WORMBUSTERS","KRONOS BOX"],["LAS HIENAS","BIKAIN"],["LOS MACHINES","CROSSFIT MOHWA"],["LOS PEPA","INDEPENDIENTE"],["NO ERA TAN BUENA IDEA","CROSSFIT PAMPLONA"],["GUAYABAS","BULLDOZER"],["DOS HOMBROS Y MEDIO","HUARGO"]],"7":[["CREMA CATALANA","PROJECT RAIDHO"],["MASMA","BECOOL CROSSFIT"],["NEMESIS MENORCA","CROSSFIT NEMESIS MEN…"],["EL BUENO, EL FEO Y LAS FULANAS","MONCALVILLO TRAINING"],["AREPAS CON JAMON","MONCALVILLO TRAINING"],["WODLAND","PREMIUM BOX ARENA"],["DONDE NOS HEMOS METIDO","INDEPENDIENTE"],["AGROFITNESS","CROSSFIT LAFABRICA"],["VIENTO EN POPPER","EISEN/DELTA"],["UNITED IDEM","CROSSFIT IDEM"],["GREEN PANTHER","GREEN PANTHER BOX"],["ELLAS MANDAN","DELTA BOX"],["PEPPA PIG","CROSSFIT PAMPLONA"],["PINTXOS UNBROKEN","CAN GALATEA"],["FULL LEVEL","LEVEL BOX"],["EL CAPI ES IMPORTADO","INDEPENDIENTE"],["DANI TIENE UN PLAN","INDEPENDIENTE"],["CARAALMENDRAS","CROSSFIT 78/79"],["MOLTIBEPATXATXEKO","CROSSFIT AMARA / CRO…"],["LOS BURLAOS","BULLFIT"]],"8":[["LACTOXICOS","CROSSFIT IRUÑA"],["RAPIDOS Y CURIOSOS","BIKAIN"],["VIRTU&COA","CROSSFIT SANT QUIRZE…"],["ENERIZOS","ARK"],["LES YAYES DE IRUKA","IRUKA CROSSFIT"],["GUT NUTRICION","LA FÁBRICA Y ARK"],["LOS 4 ELEMENTOS","COLISEUM BOX"],["PIOJOS TEAM","ELEMENT PROGRAM"],["MAS ANOS, MAS REPES","INDEPENDIENTE"],["PELIWODSOS","CROSSFIT GASTEIZ"],["LOS JABALIS DEL RAIDHO","PROJECT RAIDHO BOX"],["3 BOTIJOS Y LA TOCHA","PIRATAS BOX"],["TAFALLA TRAINING","TAFALLA TRAINING"],["LA BANDA DEL BOX","INDEPENDIENTE"],["LOS FARDOS","CROSSFIT GASTEIZ"],["REHABILIFTADOS","PROJECT RAIDHO"],["LA CUADRILLA","CROSSFIT GASTEIZ"],["BANDINETA","POR LIBRE"],["DONKEY TEAM","INVICTUS"],["CUERDA Y CAOS","INDEPENDIENTE"]],"9":[["BECARIO&CO","CROSSFIT LA FÁBRICA"],["TODO O NADA","INDEPENDIENTE"],["LOS OCHENTEROS","GHETTO"],["EAT CULT","HAMMERBOX TRAINING"],["4 AL FALLO","BENDITOCROSSFIT"],["BANDIDOS","BULLDOZER"],["OOPS I LIFTED AGAIN","INDEPENDIENTE"],["ARIMA TEAM","ARIMA"],["RESHAKA TEAM","SHAKA CROSSFIT"],["AMRAPACHES","APACHE"],["FE EN LA CREATINA DE LA ABUELA","PANDORA BOX CROSSTRA…"],["MANHATTAN TEAM","INDEPENDIENTE"],["MASTERS SJD","CROSSFIT SJD"],["CHAO CHELO","ARIMA TRAINING"],["CHANCLUCAS","MONCALVILLO"],["LAFABRICA","INDEPENDIENTE"],["JIMI FORTY","CROSSFIT SK"],["LOS TERNEROS DEL LYNX","INDEPENDIENTE"],["LOTTA DEVIL BOX CREW","DEVIL BOX , LOTTA TR…"],["PATRI'S BOYS","CROSSFIT MOHWA"]],"10":[["EL TAMANO NO IMPORTA","VIRGIMLIO"],["WODKA LIMON","BULLDOZER SAKANA"],["TEAM SIX","INVICTUS FT"],["KUNG FU PANZAS","CROSSFIT URQUIJO"],["BLACK MAMBAS","CROSSFIT COLMENAR VI…"],["PAJAREO'S PROGRAM","RUNA"],["TURRONES GEMELOS","PHOENIX BOX"],["CARDIO NOT FOUND","ATALANTA TRAINING CE…"],["RUNAKO GAZTA","RUNA"],["PIRATAS +1ATHLETE","PIRATAS BOX"],["ACIDO GALACTICO","EISEN"],["PUNCHITOS BY PAINKAVE","CROSSFIT TETUÁN"],["MAS DRAMAS QUE REPS","PHOENIX"],["GARBAGE TEAM","FITNESS DR"],["TEAM YCOD","INDEPENDIENTE"],["NEW DIVINAS","GUDA CROSSFIT BARAKA…"],["BRAVE HEART","INDEPENDIENTE"],["MUERETE LUEGO","BOU CROSSTRAINING"],["4QUALITY FLOW","CROSSFIT 4QUALITY"],["LOS JABATOS DE CAMPONUEVO","PICSIL TRAINING CENT…"]],"11":[["BASURDES","LA FABRICA"],["AITORSTOBAR","8K BOX"],["KATXISENLAMAR","MGFITNESS"],["FOURTOCHOS","DARUMA"],["LOS ANGELES DE LUCHI","PHOENIX"],["MINIMAL BOXFIT","MINIMAL BOXFIT"],["PHOENIX VINTAGE","PHOENIX"],["SOY CONCHA , ENTRO","CFA Y WILDFIRE"],["LOS ESPECIALES","KRONOS BOX"],["LLORONES MORADOS","CROSSFIT MORADO"],["TEAM CBG","CROSSFIT BAJO GÁLLEG…"],["TUTTIFRUTI","INDEPENDIENTE"],["EBRO THUNDERS","EBRO BOX"],["CLEAN&DRINK","CROSSFIT RUNA"],["HUMO'S TEAM","21.15.9"],["YAYOS TEAM","INDEPENDIENTE"],["3 TUERCAS Y LA ROSCA","CROSSFIT LA FÁBRICA"],["CUARTO DE LIBRA","QLAB"],["WEDRINK","PIRATAS"],["POLI & CACOS","FITNESS DR"]],"12":[["GUDARIS","RUNA"],["BALD&PRETTY","ZOIS TRAINING"],["PEAKY BURPEES","CROSSFIT IRUÑA"],["LOS ANGELES DE RAFA","NAGA S.C."],["GUSANO O PLOMO","QUEIRON CROSSFIT"],["LAS BELLAS Y LA BESTIA","ATALANTA TRAINING CE…"],["MAS CONTRACTURAS QUE MEDALLAS","KRONOS BOX"],["FALETE PROGRAM","KRONOS BOX"],["JON TOMAS Y TRES MAS","PHOENIX BOX"],["MAR Y CIA","INDEPENDANT"],["MAJARIS VM","CROSSFIT SK"],["HAMMER AND PIZZA","HAMMERBOX"],["POWER RANGERS","INDEPENDENT"],["EL ORACULO DEL BOX","CROSSFIT ZARAUTZ"],["ARIMA S.L. (SIN LUMBARES)","ARIMA"],["HAZME UN BIZUM","INDEPENDIENTE"],["DARUMA BABYS","DARUMA"],["CLEAN & BEERS","KRONOS BOX"],["COBRAS PURPURA","FROGFIT SALAMANCA"],["LOS RANDOMS","PHOENIX TRAINING BOX"]],"13":[["PATI Y LA ANTIELITE","THE TRAINING CLUB TR…"],["LOS NINOS","PRIME MADRIZ"],["FOUR FOR FUN","EBRO BOX"],["THE NORTH WAY","ARK & PHOENIX"],["PERU FUSION","CROSSFIT LIMA"],["ASKE ADOS","INDEPENDIENTE"],["PERFORMANCE RUNA","CROSSFIT RUNA"],["WODEAME ESTA","HIBERUS BOX"],["GERIATRICO FORAL","QUEIRON"],["CROSSFIT BARANAIN","CROSSFIT BARAÑAIN"],["MIGHTY DWARVES","CROSSFIT RUNA"],["MASTER +151 TETUAN","CROSSFIT TETUÁN"],["LO QUE DIGA MAFALDA","PRIME MADRIZ"],["LOS DEL ESPACIO","PIRATAS BOX"],["AMIGA DATE CUENTA","CROSSFIT URQUIJO"],["EUSKOJOS","CROSSFIT PAMPLONA"],["CONTROL MENTAL ZERO","NAPAR VIKINGS"],["PERIKITOS SALVAJES","CROSSFIT LAFABRICA"],["BREAKING WOD","QUEIRON CROSSFIT"],["MURIQI CREW","CROSSFIT ARGANDA"]],"14":[["CONEXION IBERICA","DEVIL BOX"],["FURIA MADRILENA","IRONHAWK"],["TRUE GROUND","SFC CROSSFIT LLINARS…"],["ELS MIURAS","INDEPENDIENTE"],["CLEANBUTEROLES®","DARUMA CROSSFIT"],["LOS ANGELES DE PAULA","NAPARVIKINGS"],["CAFE COLOMBIA","AFH TRAINING"],["MIHORAFIT","MIHORAFIT"],["INTERMIEDO","QUEIRON CROSSFIT"],["PANORAMA TEAM","BULLDOZER"],["RP TEAM","ROCALLA BOX"],["COOKIN ATHLETES","CROSSFIT COLEN"],["EL ASTURIANO Y SUS MUCHACHOS","CALATAYUD. STR CROSS…"],["MOVILIDAD REDUCIDA TEAM","HERA / ARIMA / KOXKA"],["RETRAIN X LST","LA CATEDRAL"],["EL CLUB DE LAS 7","INDEPENDIENTE"],["RANDOM LOONEYS","INDEPENDIENTE"],["BARBELL SALAD ROCALLA","ROCALLA BOX"],["75% ANDALUZ 25% MANA","INDEPENDIENTE"],["RAIDHO TEAM","PROJECT RAIDHO BOX"]],"15":[["THE GRIZZLY PROGRAM","RED GRIZZLY CROSSFIT"],["LOS MINGUITOS","KRONOS BOX"],["PLIN","ELEVENOPENBOX"],["TWM","RUNA-BULLDOZER"],["KAMUS ALPHA","KAMUS BOX"],["COOKIN MANGOS","CROSSFIT COLEN"],["GASOLINA PREMIUM","ALFA BOX"],["THE WALL AVILA","THE WALL AVILA"],["GORBEIA GRIT","GORBEIA BOX"],["TRACE PROGRAM","CROSSFIT IRUÑA"],["CONSERVAS NAVARRA","CROSSFIT PAMPLONA"],["IRUNA ARMY","CROSSFIT IRUÑA"],["VENGADORES REUNIDOS","TORRE STARK"],["PA AMB MATECITO","INDEPENDIENTE"],["SNATCH GPT","CROSSFIT IRUN"],["TIZONA SILVERBACKS","CROSSFIT TIZONA"],["NEW HOPE","ARK TRAINING CLUB"],["HARROTAGARRO TEAM","ELEVEN OPEN BOX"],["PINTXADA HISTORICA","PRIME MADRIZ"],["OPEN BOXERS","INDEPENDIENTE"]]};
+function laneDiv(h, l){ if(h === 8) return l <= 10 ? "hhmm" : "hhhm"; if(h === 14) return l <= 10 ? "hhhm" : "rx"; return TEAMDIV[h-1]; }
+const norm = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const TEAM_LIST = Object.entries(TEAMS).flatMap(([h, rows]) => rows.map(([t, b], i) => ({h:Number(h), l:i+1, t, b, div:laneDiv(Number(h), i+1), k:norm(t + " " + b)})));
+
 /* Heats de la categoría actual */
 function myBlocks(){ const cat = CAT[state.cat]; return HEATS.filter(b => cat.m === "eq" ? b.eq : b.el); }
 function blockFor(w){ const cat = CAT[state.cat]; return HEATS.find(b => (cat.m === "eq" ? b.eq : b.el) === w.n); }
 function myHeat(){ const v = Number(store.get("pag-heat-" + state.cat)); return CAT[state.cat].m === "eq" && v ? v : 0; }
+function myTeam(){ const v = store.get("pag-team-" + state.cat); if(!v || CAT[state.cat].m !== "eq") return null; const [h,l] = v.split("-").map(Number); return TEAM_LIST.find(x => x.h === h && x.l === l) || null; }
 function relevant(hh){ const d = CAT_DIV[state.cat]; return hh.div === d || hh.div === "" || (CAT[state.cat].m === "eq" && hh.div === "mix"); }
 function heatLine(w){
   const b = blockFor(w); if(!b) return "Hora de tu heat: pendiente de publicar";
   const mine = myHeat(), hh = mine && b.heats.find(x => x.h === mine);
-  if(hh) return `<b>Tu heat ${hh.h}</b> · ${b.d} · ${hh.s} – ${hh.f}<br>${prepLine(hh)}`;
+  const tm = myTeam();
+  if(hh) return `<b>Tu heat ${hh.h}</b>${tm && tm.h === hh.h ? ` · calle ${tm.l}` : ""} · ${b.d} · ${hh.s} – ${hh.f}<br>${prepLine(hh)}`;
   const own = b.heats.filter(x => x.div === CAT_DIV[state.cat]);
   const list = (own.length ? own : b.heats.filter(relevant)).map(x => `${x.h} (${x.s})`).join(", ");
   return `${b.d} · heats ${list}`;
@@ -809,17 +831,25 @@ function renderInfo(){
     const hs = mine ? b.heats.filter(x => x.h === mine) : b.heats.filter(relevant);
     return `<h4>WOD ${n} · ${b.d}</h4><ul>${hs.map(x=>`<li class="${x.h===mine?"mine":""}"><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>${x.h===mine ? `<li class="prep"><span>${prepLine(x)}</span></li>` : ""}`).join("")}</ul>`;
   }).join("");
+  const team = myTeam();
+  const search = isEq ? `<div class="teamsearch">
+      ${team ? `<p class="myteam">Tu equipo: <b>${team.t}</b> · heat ${team.h} · calle ${team.l}<button type="button" data-clear>cambiar</button></p>` : ""}
+      ${team ? "" : `<input id="teamSearch" type="search" placeholder="Busca tu equipo o tu box" autocomplete="off" aria-label="Buscar equipo">
+      <div class="tres" id="teamResults"></div>`}</div>` : "";
+  const lanes = isEq && mine && TEAMS[mine] ? `<details class="allheats"><summary>Equipos del heat ${mine}</summary><ul class="lanes">${TEAMS[mine].map(([t,b],i)=>`<li class="${team && team.h===mine && team.l===i+1 ? "mine" : ""}"><span><i>${i+1}</i>${t}</span><span>${b}</span></li>`).join("")}</ul></details>` : "";
   const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat]));
-  const all = ["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
+  const all =["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
     `<p class="blkname">${blkName(b)}</p><ul>${b.heats.map(x=>`<li><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`).join("")).join("")
     + `<h4>Finales · Domingo 15</h4><ul>${FINALS.map(f=>`<li><span>${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>`;
   vInfo.innerHTML = `
     <div class="grid">
       <section class="box sched"><h3>Horarios · ${cat.name}</h3>
+        ${search}
         ${pick}
-        ${isEq && !mine ? `<p class="hint">Elige tu heat y te sale la hora de cada WOD. Mientras, ves los heats de tu categoría y los mixtos.</p>` : ""}
+        ${isEq && !mine ? `<p class="hint">Busca tu equipo (o elige tu heat) y te sale la hora de cada WOD. Mientras, ves los heats de tu categoría y los mixtos.</p>` : ""}
         ${!isEq ? `<p class="hint">Circle21 solo marca chicas y chicos en el WOD 1. En el resto, los heats de Elite no indican división.</p>` : ""}
         ${myRows}
+        ${lanes}
         ${fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""}
         <details class="allheats"><summary>Horario completo</summary>${all}</details>
         <p class="hint">Sacado de la app de Circle21. Briefing, calentamiento y staging van a 45', 30' y 10' antes de cada heat (lo que marca Circle21 en el heat 1 de cada WOD). Si cambia algo, manda lo que diga la organización.</p>
@@ -841,6 +871,23 @@ function renderInfo(){
 vInfo.addEventListener("change", e => {
   if(e.target.id !== "heatSelect") return;
   store.set("pag-heat-" + state.cat, e.target.value);
+  const t = myTeam(); if(t && String(t.h) !== e.target.value) store.set("pag-team-" + state.cat, "");
+  renderInfo(); renderWods();
+});
+vInfo.addEventListener("input", e => {
+  if(e.target.id !== "teamSearch") return;
+  const q = norm(e.target.value.trim()), out = document.getElementById("teamResults");
+  if(q.length < 2){ out.innerHTML = ""; return; }
+  const hits = TEAM_LIST.filter(x => x.k.includes(q)).slice(0, 8);
+  out.innerHTML = hits.length ? hits.map(x => `<button type="button" data-team="${x.h}-${x.l}"><span><b>${x.t}</b><small>${x.b}</small></span><span class="hl">Heat ${x.h}<small>calle ${x.l} · ${DIVS[x.div]}</small></span></button>`).join("")
+    : `<p class="hint">No aparece. Prueba con otra parte del nombre o con el box.</p>`;
+});
+vInfo.addEventListener("click", e => {
+  const b = e.target.closest("button[data-team],button[data-clear]"); if(!b) return;
+  if(b.hasAttribute("data-clear")){ store.set("pag-team-" + state.cat, ""); renderInfo(); document.getElementById("teamSearch")?.focus(); return; }
+  const [h] = b.dataset.team.split("-");
+  store.set("pag-team-" + state.cat, b.dataset.team);
+  store.set("pag-heat-" + state.cat, h);
   renderInfo(); renderWods();
 });
 
