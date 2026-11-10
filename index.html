@@ -191,8 +191,6 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 .heatpick{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-size:18px;text-transform:uppercase;letter-spacing:.04em}
 .heatpick select{flex:1;min-width:0;font:600 15px var(--body);padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
 .heatpick select option{color:#111}
-.teamsearch input{width:100%;font:500 16px var(--body);padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
-.teamsearch input::placeholder{color:var(--ink-faint)}
 .tres{display:flex;flex-direction:column;gap:6px;margin-top:6px}
 .tres button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:14px}
 .tres button:hover,.tres button:focus-visible{border-color:var(--red-txt)}
@@ -200,12 +198,57 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 .tres small{color:var(--ink-dim);overflow-wrap:anywhere}
 .tres .hl{white-space:nowrap;text-align:right;font-family:var(--cond);font-size:17px;letter-spacing:.03em;text-transform:uppercase}
 .tres .hl small{display:block;font-family:var(--body);font-size:11px;letter-spacing:0;text-transform:none}
-.myteam{font-size:14px}
-.myteam button{all:unset;cursor:pointer;color:var(--red-txt);font-size:13px;margin-left:6px;text-decoration:underline}
 .lanes li span:first-child{min-width:0;overflow-wrap:anywhere;display:flex;gap:6px}
 .lanes li span:last-child{font-size:12px}
 .lanes li span:first-child i{font-style:normal;color:var(--ink-faint);flex:0 0 18px}
-.allheats{margin-top:6px;border-top:1px solid var(--line);padding-top:8px}
+.finder{gap:10px}
+.finder .or{margin:4px 0 0;font-size:12px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em}
+.finder input{width:100%;font:500 16px var(--body);padding:12px 12px;border-radius:12px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line-2)}
+.finder input::placeholder{color:var(--ink-faint)}
+.idcard{position:relative;border-radius:18px;padding:16px;background:linear-gradient(135deg,rgba(208,38,28,.28),rgba(19,42,99,.5));border:1px solid var(--line-2)}
+.idcard .eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+.idcard h2{margin:2px 64px 10px 0;font-family:var(--display);font-weight:400;font-size:32px;line-height:1;text-transform:uppercase;overflow-wrap:anywhere}
+.idcard .chg{all:unset;position:absolute;top:14px;right:14px;cursor:pointer;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-dim)}
+.tl-day{margin:22px 0 10px;font-family:var(--cond);font-weight:400;font-size:24px;letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.tl-day::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.tl{list-style:none;margin:0;padding:0 0 0 22px;position:relative;display:flex;flex-direction:column;gap:12px}
+.tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--line-2)}
+.tl-i{position:relative}
+.tl-i::before{content:"";position:absolute;left:-22px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--red-fill);box-shadow:0 0 0 4px rgba(208,38,28,.22)}
+.tl-c{border-radius:16px;padding:14px;background:var(--glass);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.tl-top{display:flex;align-items:center;gap:14px}
+.tl-t{font-family:var(--display);font-weight:400;font-size:34px;line-height:1;color:#fff;flex:none;min-width:86px}
+.tl-n{min-width:0;display:flex;flex-direction:column;gap:3px}
+.tl-n b{font-family:var(--cond);font-weight:400;font-size:21px;letter-spacing:.03em;text-transform:uppercase;line-height:1.05}
+.tl-n small{font-size:12.5px;color:var(--ink-dim)}
+.tl-prep{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tl-prep span{display:flex;flex-direction:column;gap:2px;padding:8px 6px;border-radius:10px;background:rgba(255,255,255,.06);text-align:center}
+.tl-prep i{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.tl-prep b{font-family:var(--cond);font-weight:400;font-size:21px;letter-spacing:.03em}
+.tl-go{all:unset;cursor:pointer;align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--red-txt)}
+.tl-go::after{content:" →"}
+.tl-i.fin .tl-c{border-style:dashed;border-color:var(--line-2);background:transparent}
+.tl-i.fin::before,.tl-i.off::before{background:var(--night);box-shadow:0 0 0 2px var(--line-2)}
+.tl-i.off .tl-c{opacity:.6}
+.accs{display:flex;flex-direction:column;gap:10px}
+.acc{border-radius:16px;padding:0 16px;background:var(--glass);border:1px solid var(--line);margin-top:0}
+#view-mio .acc{margin-top:22px}
+.acc>summary{cursor:pointer;list-style:none;display:flex;align-items:center;padding:14px 0;font-family:var(--cond);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary::after{content:"+";margin-left:auto;font-family:var(--display);font-size:24px;line-height:1;color:var(--red-txt)}
+.acc[open]>summary::after{content:"–"}
+.acc[open]{padding-bottom:14px}
+.acc ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.acc li{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-bottom:6px;font-size:14px}
+.acc li:last-child{border-bottom:none}
+.acc li span:last-child{color:var(--ink-dim);text-align:right}
+.acc li.mine span{color:#fff!important;font-weight:700}
+.acc h4{margin:12px 0 4px;font-family:var(--cond);font-weight:400;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--red-txt)}
+.acc .blkname{margin:6px 0 2px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim)}
+.acc p{margin:8px 0 0;font-size:14px;color:var(--ink-dim)}
+.acc .dot{display:inline-block;width:7px;height:7px;background:var(--red);transform:rotate(45deg);margin-right:9px;vertical-align:1px}
+.acc ul.rules li{display:block;position:relative;padding-left:16px}
+.hint.foot{margin:18px 0 0;font-size:12.5px;color:var(--ink-faint)}
 .allheats summary{cursor:pointer;font-family:var(--cond);font-size:20px;letter-spacing:.04em;text-transform:uppercase}
 .box p{margin:0;color:var(--ink-dim);font-size:14px}
 .rules li{display:block;position:relative;padding-left:15px;color:var(--ink-dim)}
@@ -220,7 +263,7 @@ footer p{margin:0;max-width:65ch}
 
 @media (max-width:640px){
   .tabs{width:100%}
-  .tab{flex:1 1 0}
+  .tab{flex:1 1 0;padding-left:8px;padding-right:8px}
   .picker{width:100%}
   .picker select{flex:1;min-width:0}
   .wod{padding:16px 12px 14px}
@@ -236,6 +279,9 @@ footer p{margin:0;max-width:65ch}
   .cmp th,.cmp td{padding:6px 4px}
   .lockup{gap:8px}
   .lk b{font-size:34px}
+  .tab{font-size:17px}
+  .tl-t{font-size:28px;min-width:70px}
+  .tl-n b{font-size:19px}
   .ev-logo{width:46px;height:46px}
   .step .mov{font-size:21px}
   .step .sy{font-size:16px}
@@ -260,7 +306,8 @@ footer p{margin:0;max-width:65ch}
   <div class="wrap">
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button class="tab" type="button" role="tab" id="tab-wods" data-view="wods" aria-selected="true" aria-controls="view-wods">WODs</button>
-      <button class="tab" type="button" role="tab" id="tab-info" data-view="info" aria-selected="false" aria-controls="view-info">Info y horarios</button>
+      <button class="tab" type="button" role="tab" id="tab-mio" data-view="mio" aria-selected="false" aria-controls="view-mio">Mi horario</button>
+      <button class="tab" type="button" role="tab" id="tab-info" data-view="info" aria-selected="false" aria-controls="view-info">Info</button>
     </nav>
     <div class="picker">
       <label for="catSelect">Tu categoría</label>
@@ -278,6 +325,7 @@ footer p{margin:0;max-width:65ch}
       <button type="button" class="install-x" id="installClose" aria-label="Cerrar aviso">×</button>
     </div>
     <section class="view" id="view-wods" role="tabpanel" aria-labelledby="tab-wods" style="margin-top:18px"></section>
+    <section class="view" id="view-mio" role="tabpanel" aria-labelledby="tab-mio" style="margin-top:18px" hidden></section>
     <section class="view" id="view-info" role="tabpanel" aria-labelledby="tab-info" style="margin-top:18px" hidden></section>
   </div>
 </main>
@@ -822,59 +870,72 @@ vWods.addEventListener("click", e=>{
 
 /* ======================= Info y horarios ======================= */
 const vInfo = document.getElementById("view-info");
+const vMio = document.getElementById("view-mio");
+function renderMio(){
+  const cat = CAT[state.cat], isEq = cat.m === "eq";
+  const blocks = myBlocks().slice().sort((x,y)=>(isEq?x.eq-y.eq:x.el-y.el)), mine = myHeat(), team = myTeam();
+  const wname = n => (WODS.find(w => w.n === n && w.mods.includes(cat.m) && (!w.cats || w.cats.includes(cat.k))) || {}).name || "";
+  const pick = isEq ? `<label class="heatpick"><span>Tu heat</span><select id="heatSelect"><option value="">Elige tu heat</option>${HEATS.find(b=>b.eq===1).heats.map(x=>`<option value="${x.h}" ${x.h===mine?"selected":""}>Heat ${x.h} · ${DIVS[x.div]}</option>`).join("")}</select></label>` : "";
+  const finder = isEq ? `<section class="box finder">
+      <input id="teamSearch" type="search" placeholder="Busca tu equipo o tu box" autocomplete="off" aria-label="Buscar equipo">
+      <div class="tres" id="teamResults"></div>
+      <p class="or">o, si ya sabes tu heat</p>${pick}</section>` : "";
+  const div = team ? DIVS[team.div] : mine ? DIVS[laneDiv(mine, 1)] : "";
+  const head = mine ? `<section class="idcard">
+      <span class="eyebrow">${team ? team.b : cat.name}</span>
+      <h2>${team ? team.t : "Heat " + mine}</h2>
+      <div class="pills"><span class="pill lv">Heat ${mine}</span>${team ? `<span class="pill">Calle ${team.l}</span><span class="pill">${div}</span>` : ""}</div>
+      <button type="button" class="chg" data-clear>Cambiar</button></section>` : "";
+  let body;
+  if(isEq && mine){
+    const fin = FINALS.filter(f => f[3].includes(team ? team.div : CAT_DIV[state.cat]));
+    const days = [...new Set(blocks.map(b => b.d))];
+    body = days.map(d => `<h3 class="tl-day">${d}</h3><ol class="tl">${blocks.filter(b=>b.d===d).map(b => {
+      const x = b.heats.find(h => h.h === mine); if(!x) return `<li class="tl-i off"><div class="tl-c"><div class="tl-top"><b class="tl-t">—</b><span class="tl-n"><b>WOD ${b.eq} · ${wname(b.eq)}</b><small>Tu heat no sale en este WOD</small></span></div></div></li>`;
+      const pr = prep(x);
+      return `<li class="tl-i"><div class="tl-c">
+        <div class="tl-top"><b class="tl-t">${x.s}</b><span class="tl-n"><b>WOD ${b.eq} · ${wname(b.eq)}</b><small>Heat ${x.h}${team ? " · calle " + team.l : ""} · acaba ${x.f}</small></span></div>
+        <div class="tl-prep"><span><i>Briefing</i><b>${pr.b}</b></span><span><i>Calentar</i><b>${pr.w}</b></span><span><i>Staging</i><b>${pr.st}</b></span></div>
+        <button type="button" class="tl-go" data-wod="${b.eq}">Ver el WOD</button></div></li>`;
+    }).join("")}${d === "Domingo 15" ? fin.map(f => `<li class="tl-i fin"><div class="tl-c"><div class="tl-top"><b class="tl-t">${f[1]}</b><span class="tl-n"><b>Final ${f[0]}</b><small>Solo los 10 mejores · acaba ${f[2]}</small></span></div></div></li>`).join("") : ""}</ol>`).join("")
+      + (TEAMS[mine] ? `<details class="acc"><summary>Equipos del heat ${mine}</summary><ul class="lanes">${TEAMS[mine].map(([t,b],i)=>`<li class="${team && team.l===i+1 ? "mine" : ""}"><span><i>${i+1}</i>${t}</span><span>${b}</span></li>`).join("")}</ul></details>` : "");
+  } else {
+    body = `<section class="box sched">${isEq ? `<p class="hint">Mientras no elijas equipo, aquí ves los heats de tu categoría y los mixtos.</p>` : `<p class="hint">Circle21 solo marca chicas y chicos en el WOD 1. En el resto, los heats de Elite no indican división.</p>`}
+      ${blocks.map(b => { const n = isEq ? b.eq : b.el; return `<h4>WOD ${n} · ${wname(n)} · ${b.d}</h4><ul>${b.heats.filter(relevant).map(x=>`<li><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`; }).join("")}
+      ${(()=>{ const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat])); return fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""; })()}</section>`;
+  }
+  vMio.innerHTML = `${mine ? head : finder}${body}
+    <p class="hint foot">Horas de la app de Circle21. Briefing, calentamiento y staging van 45', 30' y 10' antes de cada heat. Si cambia algo, manda lo que diga la organización.</p>`;
+}
+
 function renderInfo(){
   const cat = CAT[state.cat];
-  const blocks = myBlocks(), mine = myHeat(), isEq = cat.m === "eq";
-  const pick = isEq ? `<label class="heatpick"><span>Tu heat</span><select id="heatSelect"><option value="">Elige tu heat</option>${HEATS.find(b=>b.eq===1).heats.map(x=>`<option value="${x.h}" ${x.h===mine?"selected":""}>Heat ${x.h} · ${DIVS[x.div]}</option>`).join("")}</select></label>` : "";
-  const myRows = blocks.map(b => {
-    const n = isEq ? b.eq : b.el;
-    const hs = mine ? b.heats.filter(x => x.h === mine) : b.heats.filter(relevant);
-    return `<h4>WOD ${n} · ${b.d}</h4><ul>${hs.map(x=>`<li class="${x.h===mine?"mine":""}"><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>${x.h===mine ? `<li class="prep"><span>${prepLine(x)}</span></li>` : ""}`).join("")}</ul>`;
-  }).join("");
-  const team = myTeam();
-  const search = isEq ? `<div class="teamsearch">
-      ${team ? `<p class="myteam">Tu equipo: <b>${team.t}</b> · heat ${team.h} · calle ${team.l}<button type="button" data-clear>cambiar</button></p>` : ""}
-      ${team ? "" : `<input id="teamSearch" type="search" placeholder="Busca tu equipo o tu box" autocomplete="off" aria-label="Buscar equipo">
-      <div class="tres" id="teamResults"></div>`}</div>` : "";
-  const lanes = isEq && mine && TEAMS[mine] ? `<details class="allheats"><summary>Equipos del heat ${mine}</summary><ul class="lanes">${TEAMS[mine].map(([t,b],i)=>`<li class="${team && team.h===mine && team.l===i+1 ? "mine" : ""}"><span><i>${i+1}</i>${t}</span><span>${b}</span></li>`).join("")}</ul></details>` : "";
-  const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat]));
-  const all =["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
+  const all = ["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
     `<p class="blkname">${blkName(b)}</p><ul>${b.heats.map(x=>`<li><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`).join("")).join("")
     + `<h4>Finales · Domingo 15</h4><ul>${FINALS.map(f=>`<li><span>${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>`;
   vInfo.innerHTML = `
-    <div class="grid">
-      <section class="box sched"><h3>Horarios · ${cat.name}</h3>
-        ${search}
-        ${pick}
-        ${isEq && !mine ? `<p class="hint">Busca tu equipo (o elige tu heat) y te sale la hora de cada WOD. Mientras, ves los heats de tu categoría y los mixtos.</p>` : ""}
-        ${!isEq ? `<p class="hint">Circle21 solo marca chicas y chicos en el WOD 1. En el resto, los heats de Elite no indican división.</p>` : ""}
-        ${myRows}
-        ${lanes}
-        ${fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""}
-        <details class="allheats"><summary>Horario completo</summary>${all}</details>
-        <p class="hint">Sacado de la app de Circle21. Briefing, calentamiento y staging van a 45', 30' y 10' antes de cada heat (lo que marca Circle21 en el heat 1 de cada WOD). Si cambia algo, manda lo que diga la organización.</p>
-      </section>
-      <section class="box"><h3>Fechas</h3><ul>${EVENT.dates.map(([d,t])=>`<li><span>${d}</span><span>${t}</span></li>`).join("")}</ul>
-        <p>${EVENT.venue}</p></section>
-      <section class="box"><h3>Categorías</h3><ul>${CATS.map(c=>`<li><span class="lv-${c.lv}"><i class="dot" aria-hidden="true"></i>${MODS[c.m]} · ${c.name}</span><span>${c.m==="eq" ? c.comp.replace(/ \(.+\)/,"") : "Individual"}</span></li>`).join("")}</ul></section>
-      <section class="box"><h3>Formato</h3><ul class="rules">
+    <div class="accs">
+      <details class="acc"><summary>Horario completo</summary>${all}</details>
+      <details class="acc"><summary>Fechas y sede</summary><ul>${EVENT.dates.map(([d,t])=>`<li><span>${d}</span><span>${t}</span></li>`).join("")}</ul>
+        <p>${EVENT.venue}</p></details>
+      <details class="acc"><summary>Categorías</summary><ul>${CATS.map(c=>`<li><span class="lv-${c.lv}"><i class="dot" aria-hidden="true"></i>${MODS[c.m]} · ${c.name}</span><span>${c.m==="eq" ? c.comp.replace(/ \(.+\)/,"") : "Individual"}</span></li>`).join("")}</ul></details>
+      <details class="acc"><summary>Formato</summary><ul class="rules">
         <li>Equipos de 4. RX e Intermedio HHHM: 3 chicos y 1 chica. Intermedio HHMM y Scaled: 2 y 2.</li>
         <li>Heats de 20 equipos. El orden de los heats sale del orden de inscripción.</li>
         <li>Puntuación acumulada en todos los WODs.</li>
         <li>A la final pasan los 10 mejores equipos de cada categoría.</li>
         <li>Las dudas de los WODs se resuelven en los briefings previos al calentamiento.</li>
-      </ul></section>
+      </ul></details>
       <section class="box"><h3>Enlaces oficiales</h3><ul>${EVENT.links.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join("")}</ul></section>
     </div>`;
 }
 
-vInfo.addEventListener("change", e => {
+vMio.addEventListener("change", e => {
   if(e.target.id !== "heatSelect") return;
-  store.set("pag-heat-" + state.cat, e.target.value);
-  const t = myTeam(); if(t && String(t.h) !== e.target.value) store.set("pag-team-" + state.cat, "");
-  renderInfo(); renderWods();
+  store.set("pag-heat-" + state.cat, e.target.value); store.set("pag-team-" + state.cat, "");
+  renderMio(); renderWods();
 });
-vInfo.addEventListener("input", e => {
+vMio.addEventListener("input", e => {
   if(e.target.id !== "teamSearch") return;
   const q = norm(e.target.value.trim()), out = document.getElementById("teamResults");
   if(q.length < 2){ out.innerHTML = ""; return; }
@@ -882,19 +943,19 @@ vInfo.addEventListener("input", e => {
   out.innerHTML = hits.length ? hits.map(x => `<button type="button" data-team="${x.h}-${x.l}"><span><b>${x.t}</b><small>${x.b}</small></span><span class="hl">Heat ${x.h}<small>calle ${x.l} · ${DIVS[x.div]}</small></span></button>`).join("")
     : `<p class="hint">No aparece. Prueba con otra parte del nombre o con el box.</p>`;
 });
-vInfo.addEventListener("click", e => {
-  const b = e.target.closest("button[data-team],button[data-clear]"); if(!b) return;
-  if(b.hasAttribute("data-clear")){ store.set("pag-team-" + state.cat, ""); renderInfo(); document.getElementById("teamSearch")?.focus(); return; }
-  const [h] = b.dataset.team.split("-");
+vMio.addEventListener("click", e => {
+  const b = e.target.closest("button[data-team],button[data-clear],button[data-wod]"); if(!b) return;
+  if(b.dataset.wod){ showView("wods"); document.getElementById("wod-" + b.dataset.wod)?.scrollIntoView({behavior:"smooth", block:"start"}); return; }
+  if(b.hasAttribute("data-clear")){ store.set("pag-team-" + state.cat, ""); store.set("pag-heat-" + state.cat, ""); renderMio(); renderWods(); document.getElementById("teamSearch")?.focus(); return; }
   store.set("pag-team-" + state.cat, b.dataset.team);
-  store.set("pag-heat-" + state.cat, h);
-  renderInfo(); renderWods();
+  store.set("pag-heat-" + state.cat, b.dataset.team.split("-")[0]);
+  renderMio(); renderWods(); window.scrollTo({top:0, behavior:"smooth"});
 });
 
 /* ======================= Navegación y categoría ======================= */
 function showView(name){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.view===name)));
-  ["wods","info"].forEach(v=>{ document.getElementById("view-"+v).hidden = v!==name; });
+  ["wods","mio","info"].forEach(v=>{ document.getElementById("view-"+v).hidden = v!==name; });
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click", ()=>{ showView(t.dataset.view); window.scrollTo({top:0,behavior:"smooth"}); }));
 
@@ -907,14 +968,14 @@ function setCat(k, fromHash){
   store.set("pag-cat", k);
   select.value = k;
   if(!fromHash && decodeURIComponent(location.hash.slice(1)) !== k){ try{ location.replace("#"+k); }catch(e){} }
-  renderWods(); renderInfo();
+  renderWods(); renderMio(); renderInfo();
 }
 select.addEventListener("change", ()=>setCat(select.value, false));
 window.addEventListener("hashchange", ()=>{ const h = decodeURIComponent(location.hash.slice(1)); if(CAT[h] && h!==state.cat) setCat(h, true); });
 
 if(EVENT.logo){ const lg = document.getElementById("evLogo"); lg.src = EVENT.logo; lg.alt = "Logo de " + EVENT.name; lg.hidden = false; }
 select.value = state.cat;
-renderWods(); renderInfo();
+renderWods(); renderMio(); renderInfo();
 </script>
 <script>
 /* ======================= PWA ======================= */
