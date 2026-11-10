@@ -185,6 +185,8 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 .box h4{margin:10px 0 2px;font-family:var(--cond);font-weight:400;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--red-txt)}
 .box .blkname{margin:6px 0 2px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim)}
 .box li.mine span{color:var(--ink)!important;font-weight:700}
+.box li.prep{font-size:12.5px;color:var(--ink-dim);margin-top:-4px}
+.box li.prep span{color:var(--ink-dim)!important;text-align:left!important}
 .box .hint{margin:0;font-size:13px;color:var(--ink-faint)}
 .heatpick{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-size:18px;text-transform:uppercase;letter-spacing:.04em}
 .heatpick select{flex:1;min-width:0;font:600 15px var(--body);padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
@@ -690,6 +692,10 @@ const HEATS = [
   BLK("Domingo 15", 5, null, "11:56-12:08 12:12-12:24 12:28-12:40 12:44-12:56 13:00-13:12 13:16-13:28 13:33-13:45 13:49-14:01 14:05-14:17 14:21-14:33 14:37-14:49 14:53-15:05 15:09-15:21 15:26-15:38 15:42-15:54")
 ];
 const FINALS = [["Elite","16:03","16:13",["masc","fem"]],["Scaled","16:28","16:38",["esc"]],["Intermedio HHMM","16:46","16:56",["hhmm"]],["Intermedio HHHM","17:04","17:14",["hhhm"]],["RX","17:22","17:32",["rx"]]];
+/* Previa de cada heat (detalle del heat 1 de cada WOD en Circle21): briefing 45' antes (15'), calentamiento 30' antes (20'), staging 10' antes. */
+const hm = (t, d) => { const [h, m] = t.split(":").map(Number); const x = h * 60 + m + d; return String(Math.floor(x / 60)).padStart(2, "0") + ":" + String(x % 60).padStart(2, "0"); };
+const prep = x => ({b: hm(x.s, -45), w: hm(x.s, -30), st: hm(x.s, -10)});
+const prepLine = x => { const p = prep(x); return `Briefing ${p.b} · Calentamiento ${p.w} · Staging ${p.st}`; };
 const blkName = b => [b.eq ? `WOD ${b.eq} equipos` : "", b.el ? `WOD ${b.el} Elite` : ""].filter(Boolean).join(" · ");
 
 /* ======================= Utilidades ======================= */
@@ -761,7 +767,7 @@ function relevant(hh){ const d = CAT_DIV[state.cat]; return hh.div === d || hh.d
 function heatLine(w){
   const b = blockFor(w); if(!b) return "Hora de tu heat: pendiente de publicar";
   const mine = myHeat(), hh = mine && b.heats.find(x => x.h === mine);
-  if(hh) return `<b>Tu heat ${hh.h}</b> · ${b.d} · ${hh.s} – ${hh.f}`;
+  if(hh) return `<b>Tu heat ${hh.h}</b> · ${b.d} · ${hh.s} – ${hh.f}<br>${prepLine(hh)}`;
   const own = b.heats.filter(x => x.div === CAT_DIV[state.cat]);
   const list = (own.length ? own : b.heats.filter(relevant)).map(x => `${x.h} (${x.s})`).join(", ");
   return `${b.d} · heats ${list}`;
@@ -801,7 +807,7 @@ function renderInfo(){
   const myRows = blocks.map(b => {
     const n = isEq ? b.eq : b.el;
     const hs = mine ? b.heats.filter(x => x.h === mine) : b.heats.filter(relevant);
-    return `<h4>WOD ${n} · ${b.d}</h4><ul>${hs.map(x=>`<li class="${x.h===mine?"mine":""}"><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`;
+    return `<h4>WOD ${n} · ${b.d}</h4><ul>${hs.map(x=>`<li class="${x.h===mine?"mine":""}"><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>${x.h===mine ? `<li class="prep"><span>${prepLine(x)}</span></li>` : ""}`).join("")}</ul>`;
   }).join("");
   const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat]));
   const all = ["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
@@ -816,7 +822,7 @@ function renderInfo(){
         ${myRows}
         ${fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""}
         <details class="allheats"><summary>Horario completo</summary>${all}</details>
-        <p class="hint">Sacado de la app de Circle21. Si cambia algo, manda lo que diga la organización.</p>
+        <p class="hint">Sacado de la app de Circle21. Briefing, calentamiento y staging van a 45', 30' y 10' antes de cada heat (lo que marca Circle21 en el heat 1 de cada WOD). Si cambia algo, manda lo que diga la organización.</p>
       </section>
       <section class="box"><h3>Fechas</h3><ul>${EVENT.dates.map(([d,t])=>`<li><span>${d}</span><span>${t}</span></li>`).join("")}</ul>
         <p>${EVENT.venue}</p></section>
