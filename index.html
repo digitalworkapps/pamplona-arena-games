@@ -182,6 +182,15 @@ details.blk>summary small{white-space:nowrap;font-family:var(--body);font-weight
 .box .dot{display:inline-block;width:7px;height:7px;background:var(--red);transform:rotate(45deg);margin-right:9px;vertical-align:1px}
 .box.pend{border:1px dashed rgba(227,38,28,.6)}
 .box.pend h3{color:var(--red-txt)}
+.box h4{margin:10px 0 2px;font-family:var(--cond);font-weight:400;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--red-txt)}
+.box .blkname{margin:6px 0 2px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim)}
+.box li.mine span{color:var(--ink)!important;font-weight:700}
+.box .hint{margin:0;font-size:13px;color:var(--ink-faint)}
+.heatpick{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-size:18px;text-transform:uppercase;letter-spacing:.04em}
+.heatpick select{flex:1;min-width:0;font:600 15px var(--body);padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.08);color:inherit;border:1px solid var(--line)}
+.heatpick select option{color:#111}
+.allheats{margin-top:6px;border-top:1px solid var(--line);padding-top:8px}
+.allheats summary{cursor:pointer;font-family:var(--cond);font-size:20px;letter-spacing:.04em;text-transform:uppercase}
 .box p{margin:0;color:var(--ink-dim);font-size:14px}
 .rules li{display:block;position:relative;padding-left:15px;color:var(--ink-dim)}
 .rules li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;background:var(--red);transform:rotate(45deg)}
@@ -266,7 +275,7 @@ footer p{margin:0;max-width:65ch}
 
 <script>
 /* ======================= DATOS DE LA COMPETICIÓN =======================
-   Para añadir un WOD: un objeto más en WODS. Para los horarios: rellena SCHEDULE
+   Para añadir un WOD: un objeto más en WODS. Para los horarios: HEATS (un bloque por WOD)
    cuando la organización los publique (una fila por heat) y sube la versión del caché en sw.js. */
 const EVENT = {
   name: "Pamplona Arena Games 26",
@@ -663,9 +672,25 @@ const WODS = [
   }
 ];
 
-/* Horarios: vacío hasta que se publiquen. Formato de cada fila (heat):
-   {d:"sab", e:1, c:"eq-rx", h:1, s:"9:00", fi:"9:11", b:"8:20", w:"8:40", l:"8:55", a:"8:58"} */
-const SCHEDULE = [];
+/* Horarios (app Circle21, 10 nov 2026). Cada bloque es un WOD: eq = nº de WOD de equipos, el = nº de WOD de Elite
+   (algunos heats se comparten). div del heat: esc, hhmm, hhhm, rx, mix, fem, masc o "" si Circle21 no la indica. */
+const DIVS = {esc:"Scaled", hhmm:"Inter HHMM", hhhm:"Inter HHHM", rx:"RX", mix:"Mix", fem:"Elite F", masc:"Elite M", "":"Sin división"};
+const CAT_DIV = {"eq-esc":"esc","eq-int-hhmm":"hhmm","eq-int-hhhm":"hhhm","eq-rx":"rx","ind-elite-m":"masc","ind-elite-f":"fem"};
+const TEAMDIV = ["esc","esc","esc","esc","esc","esc","hhmm","mix","hhhm","hhhm","hhhm","hhhm","hhhm","mix","rx",""];
+const BLK = (d, eq, el, times, divs) => ({d, eq, el, heats: times.split(" ").map((t,i)=>{ const [s,f] = t.split("-"); return {h:i+1, s, f, div: divs ? divs[i] : TEAMDIV[i]}; })});
+const HEATS = [
+  BLK("Viernes 13", null, 1, "17:00-17:15 17:20-17:35 17:40-17:55 18:00-18:15", ["fem","fem","masc","masc"]),
+  BLK("Viernes 13", null, 2, "19:30-19:43 19:51-20:04 20:12-20:25 20:33-20:46", ["","","",""]),
+  BLK("Sábado 14", 1, 3, "08:00-08:11 08:15-08:26 08:30-08:41 08:45-08:56 09:00-09:11 09:15-09:26 09:32-09:43 09:47-09:58 10:02-10:13 10:17-10:28 10:32-10:43 10:49-11:00 11:04-11:15 11:19-11:30 11:34-11:45 11:51-12:02"),
+  BLK("Sábado 14", 2, null, "12:25-12:38 12:43-12:56 13:01-13:14 13:19-13:32 13:37-13:50 13:55-14:08 14:14-14:27 14:32-14:45 14:50-15:03 15:08-15:21 15:26-15:39 15:44-15:57 16:02-16:15 16:22-16:35 16:42-16:55"),
+  BLK("Sábado 14", null, 4, "17:07-17:18", [""]),
+  BLK("Sábado 14", 3, 5, "17:43-17:53 17:58-18:08 18:13-18:23 18:28-18:38 18:43-18:53 18:58-19:08 19:15-19:25 19:30-19:40 19:45-19:55 20:00-20:10 20:15-20:25 20:32-20:42 20:47-20:57 21:02-21:12 21:17-21:27 21:37-21:47"),
+  BLK("Domingo 15", 4, null, "08:00-08:09 08:14-08:23 08:28-08:37 08:42-08:51 08:56-09:05 09:10-09:19 09:25-09:34 09:39-09:48 09:53-10:02 10:07-10:16 10:21-10:30 10:35-10:44 10:49-10:58 11:04-11:13 11:18-11:27"),
+  BLK("Domingo 15", null, 6, "11:37-11:46", [""]),
+  BLK("Domingo 15", 5, null, "11:56-12:08 12:12-12:24 12:28-12:40 12:44-12:56 13:00-13:12 13:16-13:28 13:33-13:45 13:49-14:01 14:05-14:17 14:21-14:33 14:37-14:49 14:53-15:05 15:09-15:21 15:26-15:38 15:42-15:54")
+];
+const FINALS = [["Elite","16:03","16:13",["masc","fem"]],["Scaled","16:28","16:38",["esc"]],["Intermedio HHMM","16:46","16:56",["hhmm"]],["Intermedio HHHM","17:04","17:14",["hhhm"]],["RX","17:22","17:32",["rx"]]];
+const blkName = b => [b.eq ? `WOD ${b.eq} equipos` : "", b.el ? `WOD ${b.el} Elite` : ""].filter(Boolean).join(" · ");
 
 /* ======================= Utilidades ======================= */
 const store = {
@@ -723,9 +748,23 @@ function wodCard(w){
     <details class="blk"><summary>Standards de ${LEVELS[lv]}<small>${stds.length} movimiento${stds.length === 1 ? "" : "s"}</small></summary>
       <div class="blk-body">${stds.map(s=>`<div class="std"><h4>${s.mv}</h4><ul>${s.pts.map(p=>`<li>${p}</li>`).join("")}${s.sync ? `<li class="sync">Synchro: ${s.sync}</li>` : ""}</ul></div>`).join("")}</div></details>
     </div>
-    <div class="wod-foot"><span>Hora de tu heat: pendiente de publicar</span>
+    <div class="wod-foot"><span>${heatLine(w)}</span>
       <a class="link" href="${w.pdf}" target="_blank" rel="noopener">Briefing oficial (PDF)</a></div>
   </article>`;
+}
+
+/* Heats de la categoría actual */
+function myBlocks(){ const cat = CAT[state.cat]; return HEATS.filter(b => cat.m === "eq" ? b.eq : b.el); }
+function blockFor(w){ const cat = CAT[state.cat]; return HEATS.find(b => (cat.m === "eq" ? b.eq : b.el) === w.n); }
+function myHeat(){ const v = Number(store.get("pag-heat-" + state.cat)); return CAT[state.cat].m === "eq" && v ? v : 0; }
+function relevant(hh){ const d = CAT_DIV[state.cat]; return hh.div === d || hh.div === "" || (CAT[state.cat].m === "eq" && hh.div === "mix"); }
+function heatLine(w){
+  const b = blockFor(w); if(!b) return "Hora de tu heat: pendiente de publicar";
+  const mine = myHeat(), hh = mine && b.heats.find(x => x.h === mine);
+  if(hh) return `<b>Tu heat ${hh.h}</b> · ${b.d} · ${hh.s} – ${hh.f}`;
+  const own = b.heats.filter(x => x.div === CAT_DIV[state.cat]);
+  const list = (own.length ? own : b.heats.filter(relevant)).map(x => `${x.h} (${x.s})`).join(", ");
+  return `${b.d} · heats ${list}`;
 }
 
 function renderWods(){
@@ -735,7 +774,7 @@ function renderWods(){
     <div class="me">
       <span class="eyebrow">${MODS[cat.m]} · ${cat.comp}</span>
       <h2>${cat.name}</h2>
-      <div class="pills"><span class="pill lv">${SHORT[cat.lv]}</span><span class="pill">${list.length} ${list.length===1?"WOD publicado":"WODs publicados"}</span><span class="pill">Horarios pendientes</span></div>
+      <div class="pills"><span class="pill lv">${SHORT[cat.lv]}</span><span class="pill">${list.length} ${list.length===1?"WOD publicado":"WODs publicados"}</span><span class="pill">${myHeat() ? "Heat " + myHeat() : "Horarios publicados"}</span></div>
     </div>
     ${list.length ? list.map(wodCard).join("") : `<div class="empty lv-${cat.lv}"><b>Aún no hay WODs</b><p>La organización todavía no ha publicado los WODs de ${cat.name}. En cuanto salgan en Circle21 o en su Instagram, aparecerán aquí.</p></div>`}`;
 }
@@ -757,13 +796,27 @@ vWods.addEventListener("click", e=>{
 const vInfo = document.getElementById("view-info");
 function renderInfo(){
   const cat = CAT[state.cat];
-  const mine = SCHEDULE.filter(r=>r.c===state.cat);
+  const blocks = myBlocks(), mine = myHeat(), isEq = cat.m === "eq";
+  const pick = isEq ? `<label class="heatpick"><span>Tu heat</span><select id="heatSelect"><option value="">Elige tu heat</option>${HEATS.find(b=>b.eq===1).heats.map(x=>`<option value="${x.h}" ${x.h===mine?"selected":""}>Heat ${x.h} · ${DIVS[x.div]}</option>`).join("")}</select></label>` : "";
+  const myRows = blocks.map(b => {
+    const n = isEq ? b.eq : b.el;
+    const hs = mine ? b.heats.filter(x => x.h === mine) : b.heats.filter(relevant);
+    return `<h4>WOD ${n} · ${b.d}</h4><ul>${hs.map(x=>`<li class="${x.h===mine?"mine":""}"><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`;
+  }).join("");
+  const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat]));
+  const all = ["Viernes 13","Sábado 14","Domingo 15"].map(d => `<h4>${d}</h4>` + HEATS.filter(b=>b.d===d).map(b =>
+    `<p class="blkname">${blkName(b)}</p><ul>${b.heats.map(x=>`<li><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`).join("")).join("")
+    + `<h4>Finales · Domingo 15</h4><ul>${FINALS.map(f=>`<li><span>${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>`;
   vInfo.innerHTML = `
     <div class="grid">
-      <section class="box pend"><h3>Horarios</h3>
-        ${mine.length ? `<p>${mine.length} heats publicados para ${cat.name}.</p>` :
-        `<p>La organización aún no ha publicado los heats. En cuanto salgan, aquí tendrás la chuleta de ${cat.name}: briefing, calentamiento, line up, entrada a pista y hora de cada WOD.</p>
-         <p>Mientras, en Circle21 (app) puedes seguir los heats de tu equipo.</p>`}
+      <section class="box sched"><h3>Horarios · ${cat.name}</h3>
+        ${pick}
+        ${isEq && !mine ? `<p class="hint">Elige tu heat y te sale la hora de cada WOD. Mientras, ves los heats de tu categoría y los mixtos.</p>` : ""}
+        ${!isEq ? `<p class="hint">Circle21 solo marca chicas y chicos en el WOD 1. En el resto, los heats de Elite no indican división.</p>` : ""}
+        ${myRows}
+        ${fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""}
+        <details class="allheats"><summary>Horario completo</summary>${all}</details>
+        <p class="hint">Sacado de la app de Circle21. Si cambia algo, manda lo que diga la organización.</p>
       </section>
       <section class="box"><h3>Fechas</h3><ul>${EVENT.dates.map(([d,t])=>`<li><span>${d}</span><span>${t}</span></li>`).join("")}</ul>
         <p>${EVENT.venue}</p></section>
@@ -778,6 +831,12 @@ function renderInfo(){
       <section class="box"><h3>Enlaces oficiales</h3><ul>${EVENT.links.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join("")}</ul></section>
     </div>`;
 }
+
+vInfo.addEventListener("change", e => {
+  if(e.target.id !== "heatSelect") return;
+  store.set("pag-heat-" + state.cat, e.target.value);
+  renderInfo(); renderWods();
+});
 
 /* ======================= Navegación y categoría ======================= */
 function showView(name){
