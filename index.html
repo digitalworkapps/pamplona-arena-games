@@ -73,6 +73,8 @@ a{color:#fff}
 .tab:hover{color:#fff}
 .tab[aria-selected="true"]{background:var(--red-fill);color:#fff}
 .picker{display:flex;align-items:center;gap:10px;min-width:0}
+.picker[hidden]{display:none}
+.tcount{margin:2px 0 0;font-size:12px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em}
 .picker label{font-family:var(--cond);font-weight:400;font-size:17px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
 .picker select{font-family:var(--body);font-weight:700;font-size:14px;color:#fff;background:rgba(255,255,255,.07);border:1px solid var(--line-2);border-radius:10px;padding:8px 10px;min-height:40px;max-width:100%;cursor:pointer}
 .picker select option,.picker select optgroup{background:#0b1736;color:#fff}
@@ -830,8 +832,20 @@ const TEAM_LIST = Object.entries(TEAMS).flatMap(([h, rows]) => rows.map(([t, b],
 /* Heats de la categoría actual */
 function myBlocks(){ const cat = CAT[state.cat]; return HEATS.filter(b => cat.m === "eq" ? b.eq : b.el); }
 function blockFor(w){ const cat = CAT[state.cat]; return HEATS.find(b => (cat.m === "eq" ? b.eq : b.el) === w.n); }
-function myHeat(){ const v = Number(store.get("pag-heat-" + state.cat)); return CAT[state.cat].m === "eq" && v ? v : 0; }
-function myTeam(){ const v = store.get("pag-team-" + state.cat); if(!v || CAT[state.cat].m !== "eq") return null; const [h,l] = v.split("-").map(Number); return TEAM_LIST.find(x => x.h === h && x.l === l) || null; }
+/* Mi equipo / mi heat: uno solo para toda la app, no depende de la categoría elegida en WODs. */
+(function migrate(){ if(store.get("pag-team") || store.get("pag-heat")) return;
+  for(const c of CATS){ const t = store.get("pag-team-" + c.k), h = store.get("pag-heat-" + c.k); if(t || h){ store.set("pag-team", t || ""); store.set("pag-heat", h || ""); return; } } })();
+const DIV_CAT = {esc:"eq-esc", hhmm:"eq-int-hhmm", hhhm:"eq-int-hhhm", rx:"eq-rx"};
+function myTeam(){ const v = store.get("pag-team"); if(!v) return null; const [h,l] = v.split("-").map(Number); return TEAM_LIST.find(x => x.h === h && x.l === l) || null; }
+function myHeatAny(){ const v = Number(store.get("pag-heat")); return v || 0; }
+/* En la pestaña WODs solo se usa si el equipo/heat es de la categoría que se está viendo. */
+function myHeat(){
+  const h = myHeatAny(); if(!h || CAT[state.cat].m !== "eq") return 0;
+  const t = myTeam(), d = CAT_DIV[state.cat];
+  if(t) return t.div === d ? h : 0;
+  const x = HEATS.find(b => b.eq === 1).heats.find(y => y.h === h);
+  return x && (x.div === d || x.div === "mix") ? h : 0;
+}
 function relevant(hh){ const d = CAT_DIV[state.cat]; return hh.div === d || hh.div === "" || (CAT[state.cat].m === "eq" && hh.div === "mix"); }
 function heatLine(w){
   const b = blockFor(w); if(!b) return "Hora de tu heat: pendiente de publicar";
@@ -872,23 +886,23 @@ vWods.addEventListener("click", e=>{
 const vInfo = document.getElementById("view-info");
 const vMio = document.getElementById("view-mio");
 function renderMio(){
-  const cat = CAT[state.cat], isEq = cat.m === "eq";
-  const blocks = myBlocks().slice().sort((x,y)=>(isEq?x.eq-y.eq:x.el-y.el)), mine = myHeat(), team = myTeam();
-  const wname = n => (WODS.find(w => w.n === n && w.mods.includes(cat.m) && (!w.cats || w.cats.includes(cat.k))) || {}).name || "";
-  const pick = isEq ? `<label class="heatpick"><span>Tu heat</span><select id="heatSelect"><option value="">Elige tu heat</option>${HEATS.find(b=>b.eq===1).heats.map(x=>`<option value="${x.h}" ${x.h===mine?"selected":""}>Heat ${x.h} · ${DIVS[x.div]}</option>`).join("")}</select></label>` : "";
-  const finder = isEq ? `<section class="box finder">
-      <input id="teamSearch" type="search" placeholder="Busca tu equipo o tu box" autocomplete="off" aria-label="Buscar equipo">
+  const blocks = HEATS.filter(b => b.eq).sort((x,y) => x.eq - y.eq), mine = myHeatAny(), team = myTeam();
+  const wname = n => (WODS.find(w => w.n === n && w.mods.includes("eq")) || {}).name || "";
+  const hdiv = mine ? (HEATS.find(b => b.eq === 1).heats.find(x => x.h === mine) || {}).div : "";
+  const pick = `<label class="heatpick"><span>Tu heat</span><select id="heatSelect"><option value="">Elige tu heat</option>${HEATS.find(b=>b.eq===1).heats.map(x=>`<option value="${x.h}" ${x.h===mine?"selected":""}>Heat ${x.h} · ${DIVS[x.div]}</option>`).join("")}</select></label>`;
+  const finder = `<section class="box finder">
+      <input id="teamSearch" type="search" placeholder="Busca tu equipo o tu box" autocomplete="off" aria-label="Buscar equipo o box">
       <div class="tres" id="teamResults"></div>
-      <p class="or">o, si ya sabes tu heat</p>${pick}</section>` : "";
-  const div = team ? DIVS[team.div] : mine ? DIVS[laneDiv(mine, 1)] : "";
+      <p class="or">o, si ya sabes tu heat</p>${pick}</section>`;
+  const div = team ? team.div : hdiv;
   const head = mine ? `<section class="idcard">
-      <span class="eyebrow">${team ? team.b : cat.name}</span>
+      <span class="eyebrow">${team ? team.b : "Equipos"}</span>
       <h2>${team ? team.t : "Heat " + mine}</h2>
-      <div class="pills"><span class="pill lv">Heat ${mine}</span>${team ? `<span class="pill">Calle ${team.l}</span><span class="pill">${div}</span>` : ""}</div>
+      <div class="pills"><span class="pill lv">Heat ${mine}</span>${team ? `<span class="pill">Calle ${team.l}</span>` : ""}<span class="pill">${DIVS[div] || ""}</span></div>
       <button type="button" class="chg" data-clear>Cambiar</button></section>` : "";
   let body;
-  if(isEq && mine){
-    const fin = FINALS.filter(f => f[3].includes(team ? team.div : CAT_DIV[state.cat]));
+  if(mine){
+    const fin = FINALS.filter(f => div === "mix" ? f[3].includes("hhmm") || f[3].includes("hhhm") : f[3].includes(div));
     const days = [...new Set(blocks.map(b => b.d))];
     body = days.map(d => `<h3 class="tl-day">${d}</h3><ol class="tl">${blocks.filter(b=>b.d===d).map(b => {
       const x = b.heats.find(h => h.h === mine); if(!x) return `<li class="tl-i off"><div class="tl-c"><div class="tl-top"><b class="tl-t">—</b><span class="tl-n"><b>WOD ${b.eq} · ${wname(b.eq)}</b><small>Tu heat no sale en este WOD</small></span></div></div></li>`;
@@ -900,9 +914,7 @@ function renderMio(){
     }).join("")}${d === "Domingo 15" ? fin.map(f => `<li class="tl-i fin"><div class="tl-c"><div class="tl-top"><b class="tl-t">${f[1]}</b><span class="tl-n"><b>Final ${f[0]}</b><small>Solo los 10 mejores · acaba ${f[2]}</small></span></div></div></li>`).join("") : ""}</ol>`).join("")
       + (TEAMS[mine] ? `<details class="acc"><summary>Equipos del heat ${mine}</summary><ul class="lanes">${TEAMS[mine].map(([t,b],i)=>`<li class="${team && team.l===i+1 ? "mine" : ""}"><span><i>${i+1}</i>${t}</span><span>${b}</span></li>`).join("")}</ul></details>` : "");
   } else {
-    body = `<section class="box sched">${isEq ? `<p class="hint">Mientras no elijas equipo, aquí ves los heats de tu categoría y los mixtos.</p>` : `<p class="hint">Circle21 solo marca chicas y chicos en el WOD 1. En el resto, los heats de Elite no indican división.</p>`}
-      ${blocks.map(b => { const n = isEq ? b.eq : b.el; return `<h4>WOD ${n} · ${wname(n)} · ${b.d}</h4><ul>${b.heats.filter(relevant).map(x=>`<li><span>Heat ${x.h} · ${DIVS[x.div]}</span><span>${x.s} – ${x.f}</span></li>`).join("")}</ul>`; }).join("")}
-      ${(()=>{ const fin = FINALS.filter(f => f[3].includes(CAT_DIV[state.cat])); return fin.length ? `<h4>Final · Domingo 15</h4><ul>${fin.map(f=>`<li><span>Top 10 ${f[0]}</span><span>${f[1]} – ${f[2]}</span></li>`).join("")}</ul>` : ""; })()}</section>`;
+    body = `<p class="hint">Escribe el nombre de tu equipo o de tu box (por ejemplo, «Iruña») y te salen todos sus equipos, de todas las categorías. Elite individual: sus horarios están en <b>Info → Horario completo</b>.</p>`;
   }
   vMio.innerHTML = `${mine ? head : finder}${body}
     <p class="hint foot">Horas de la app de Circle21. Briefing, calentamiento y staging van 45', 30' y 10' antes de cada heat. Si cambia algo, manda lo que diga la organización.</p>`;
@@ -932,30 +944,34 @@ function renderInfo(){
 
 vMio.addEventListener("change", e => {
   if(e.target.id !== "heatSelect") return;
-  store.set("pag-heat-" + state.cat, e.target.value); store.set("pag-team-" + state.cat, "");
+  store.set("pag-heat", e.target.value); store.set("pag-team", "");
   renderMio(); renderWods();
 });
 vMio.addEventListener("input", e => {
   if(e.target.id !== "teamSearch") return;
   const q = norm(e.target.value.trim()), out = document.getElementById("teamResults");
   if(q.length < 2){ out.innerHTML = ""; return; }
-  const hits = TEAM_LIST.filter(x => x.k.includes(q)).slice(0, 8);
-  out.innerHTML = hits.length ? hits.map(x => `<button type="button" data-team="${x.h}-${x.l}"><span><b>${x.t}</b><small>${x.b}</small></span><span class="hl">Heat ${x.h}<small>calle ${x.l} · ${DIVS[x.div]}</small></span></button>`).join("")
+  const hits = TEAM_LIST.filter(x => x.k.includes(q));
+  out.innerHTML = hits.length ? (hits.length > 1 ? `<p class="tcount">${hits.length} equipos</p>` : "") + hits.map(x => `<button type="button" data-team="${x.h}-${x.l}"><span><b>${x.t}</b><small>${x.b}</small></span><span class="hl">Heat ${x.h}<small>calle ${x.l} · ${DIVS[x.div]}</small></span></button>`).join("")
     : `<p class="hint">No aparece. Prueba con otra parte del nombre o con el box.</p>`;
 });
 vMio.addEventListener("click", e => {
   const b = e.target.closest("button[data-team],button[data-clear],button[data-wod]"); if(!b) return;
   if(b.dataset.wod){ showView("wods"); document.getElementById("wod-" + b.dataset.wod)?.scrollIntoView({behavior:"smooth", block:"start"}); return; }
-  if(b.hasAttribute("data-clear")){ store.set("pag-team-" + state.cat, ""); store.set("pag-heat-" + state.cat, ""); renderMio(); renderWods(); document.getElementById("teamSearch")?.focus(); return; }
-  store.set("pag-team-" + state.cat, b.dataset.team);
-  store.set("pag-heat-" + state.cat, b.dataset.team.split("-")[0]);
-  renderMio(); renderWods(); window.scrollTo({top:0, behavior:"smooth"});
+  if(b.hasAttribute("data-clear")){ store.set("pag-team", ""); store.set("pag-heat", ""); renderMio(); renderWods(); document.getElementById("teamSearch")?.focus(); return; }
+  store.set("pag-team", b.dataset.team);
+  store.set("pag-heat", b.dataset.team.split("-")[0]);
+  const t = myTeam();
+  if(t && DIV_CAT[t.div] && DIV_CAT[t.div] !== state.cat) setCat(DIV_CAT[t.div], false); // WODs pasa a la categoría del equipo
+  else { renderMio(); renderWods(); }
+  window.scrollTo({top:0, behavior:"smooth"});
 });
 
 /* ======================= Navegación y categoría ======================= */
 function showView(name){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.view===name)));
   ["wods","mio","info"].forEach(v=>{ document.getElementById("view-"+v).hidden = v!==name; });
+  document.querySelector(".picker").hidden = name !== "wods"; // la categoría solo afecta a los WODs
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click", ()=>{ showView(t.dataset.view); window.scrollTo({top:0,behavior:"smooth"}); }));
 
